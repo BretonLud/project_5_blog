@@ -1,0 +1,149 @@
+<?php
+
+namespace App\Entity;
+
+class User
+{
+    private int $id;
+    private string $firstname;
+    private string $lastname;
+    private string $email;
+    private string $password;
+    private string $role;
+    private bool $validated;
+    private string $slug;
+    
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getFirstname(): string
+    {
+        return $this->firstname;
+    }
+    
+    /**
+     * @param string $firstname
+     * @return void
+     */
+    public function setFirstname(string $firstname): void
+    {
+        $this->firstname = $firstname;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getLastname(): string
+    {
+        return $this->lastname;
+    }
+    
+    /**
+     * @param string $lastname
+     * @return void
+     */
+    public function setLastname(string $lastname): void
+    {
+        $this->lastname = $lastname;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+    
+    /**
+     * @param string $email
+     * @return void
+     */
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+    
+    /**
+     * @param string $password
+     * @return void
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+    
+    /**
+     * @param string $role
+     * @return void
+     */
+    public function setRole(string $role): void
+    {
+        $this->role = $role;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function getValidated(): bool
+    {
+        return $this->validated;
+    }
+    
+    /**
+     * @param bool $validated
+     * @return void
+     */
+    public function setValidated(bool $validated): void
+    {
+        $this->validated = $validated;
+    }
+    
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+    
+    /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
+}
