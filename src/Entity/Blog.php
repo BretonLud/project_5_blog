@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use DateTime;
+
 class Blog
 {
     private int $id;
@@ -11,6 +13,10 @@ class Blog
     private \DateTime $updated_at;
     private string $content;
     
+    public function __construct()
+    {
+        $this->created_at = new DateTime('now');
+    }
     
     /**
      * @return int
@@ -18,6 +24,11 @@ class Blog
     public function getId(): int
     {
         return $this->id;
+    }
+    
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
     
     /**
@@ -99,4 +110,6 @@ class Blog
     {
         $this->content = $content;
     }
+    
+    
 }

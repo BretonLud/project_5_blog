@@ -9,7 +9,7 @@ class Comment
     private \DateTime $created_at;
     private \DateTime $updated_at;
     private string $content;
-    private bool $validated;
+    private bool $validated = false;
     
     /**
      * @return int
@@ -18,6 +18,12 @@ class Comment
     {
         return $this->id;
     }
+    
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+    
     
     /**
      * @return User

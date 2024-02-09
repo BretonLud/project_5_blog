@@ -10,21 +10,21 @@ class User
     private string $email;
     private string $password;
     private string $role;
-    private bool $validated;
+    private bool $validated = false;
     private string $slug;
     
-    /**
-     * @return int
-     */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
     
-    /**
-     * @return string
-     */
-    public function getFirstname(): string
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+    
+    
+    public function getFirstname(): ?string
     {
         return $this->firstname;
     }
@@ -38,10 +38,8 @@ class User
         $this->firstname = $firstname;
     }
     
-    /**
-     * @return string
-     */
-    public function getLastname(): string
+    
+    public function getLastname(): ?string
     {
         return $this->lastname;
     }
@@ -55,10 +53,8 @@ class User
         $this->lastname = $lastname;
     }
     
-    /**
-     * @return string
-     */
-    public function getEmail(): string
+    
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -72,10 +68,7 @@ class User
         $this->email = $email;
     }
     
-    /**
-     * @return string
-     */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -89,10 +82,7 @@ class User
         $this->password = $password;
     }
     
-    /**
-     * @return string
-     */
-    public function getRole(): string
+    public function getRole(): ?string
     {
         return $this->role;
     }
@@ -131,10 +121,8 @@ class User
         return $this->firstname . ' ' . $this->lastname;
     }
     
-    /**
-     * @return string
-     */
-    public function getSlug(): string
+    
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -146,4 +134,6 @@ class User
     {
         $this->slug = $slug;
     }
+    
+    
 }

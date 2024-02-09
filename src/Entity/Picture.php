@@ -13,6 +13,11 @@ class Picture
     private bool $header;
     private string $slug;
     
+    public function __construct()
+    {
+        $this->created_at = new DateTime('now');
+    }
+    
     /**
      * @return int
      */
@@ -21,10 +26,16 @@ class Picture
         return $this->id;
     }
     
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+    
+    
     /**
-     * @return Blog
+     * @return Blog|null
      */
-    public function getBlog(): Blog
+    public function getBlog(): ?Blog
     {
         return $this->blog;
     }
