@@ -15,6 +15,8 @@ $router = new Router($_GET['url']);
 
 $router->get('/admin/test/:id/:slug', "Admin\Test\Test#index")->with('id', '[0-9]+')->with('slug', '[0-9\-a-z]+');
 $router->get('/', "Home#index");
+$router->get('/admin/user/:slug', "Admin\User#edit")->with('slug', '[0-9\-a-z]+');
+$router->get('/admin/user', "Admin\User#index");
 
 try {
     $router->run();

@@ -2,15 +2,26 @@
 
 namespace App\Controller\Admin;
 
+use App\Database\Connection;
+use App\Entity\User;
+use App\Repository\UserRepository;
+
 class UserController
 {
     public function index()
     {
-        echo 'test';
+        $connection = new Connection();
+        $users = (new UserRepository($connection))->findAll();
+        var_dump($users);
+        die();
     }
     
-    public function edit()
+    public function edit(string $slug)
     {
-        echo 'edit';
+        $connection = new Connection();
+        $user = (new UserRepository($connection))->find($slug);
+        
+        var_dump($user);
+        die();
     }
 }
