@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Password Reset Email Sent{% endblock %}
+
+{% block body %}
+    <div class="container m-auto">
+        <div class="row d-flex justify-content-center align-items-center vh-100">
+            <div class="col col-xl-10">
+                <div class="card" style="border-radius: 1rem;">
+                    <div class="row g-0">
+                        <div class="col-md-6 col-lg-5 d-none d-md-flex  justify-content-center
+                        align-items-center">
+                            <img src=""
+                                 alt="login form" class="img-fluid"/>
+                        </div>
+                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="card-body p-4 p-lg-5 text-black">
+                                <div class="d-flex align-items-center mb-3 pb-1">
+                                    <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
+                                </div>
+
+                                <h5 class="fw-normal mb-3 pb-3"
+                                    style="letter-spacing: 1px;">L'email pour réinitialiser votre mot de passe a été envoyé !</h5>
+
+                                <p>
+                                    Si un compte correspondant à votre adresse e-mail existe, un e-mail vient d'être envoyé contenant un lien que vous pouvez utiliser pour
+                                    réinitialiser votre mot de passe. Ce lien
+                                    expirera dans 10 minutes.
+                                </p>
+                                <p>Si vous ne recevez pas d'email, veuillez vérifier votre dossier spam ou
+                                    <a href="/reset-password"> réessayer</a>.
+                                </p>
+                                <a href="/login" class="small text-muted">Se connecter ?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
