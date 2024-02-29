@@ -13,14 +13,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-/*
-     * require 'vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable(ROOT, '.env.local');
+$dotenv->safeLoad();
 
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-        $dotenv->load();
-        
-        $maVariable = $_ENV['NOM_DE_LA_VARIABLE'];
-*/
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable(ROOT);
+$dotenv->load();
+
 
 $router = new Router($_GET['url']);
 
