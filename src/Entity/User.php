@@ -13,17 +13,26 @@ class User
     private bool $validated = false;
     private string $slug;
     
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
     
+    /**
+     * @param int $id
+     * @return void
+     */
     public function setId(int $id): void
     {
         $this->id = $id;
     }
     
-    
+    /**
+     * @return string|null
+     */
     public function getFirstname(): ?string
     {
         return $this->firstname;
@@ -38,7 +47,9 @@ class User
         $this->firstname = $firstname;
     }
     
-    
+    /**
+     * @return string|null
+     */
     public function getLastname(): ?string
     {
         return $this->lastname;
@@ -53,7 +64,9 @@ class User
         $this->lastname = $lastname;
     }
     
-    
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
@@ -68,6 +81,9 @@ class User
         $this->email = $email;
     }
     
+    /**
+     * @return string|null
+     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -121,7 +137,9 @@ class User
         return $this->firstname . ' ' . $this->lastname;
     }
     
-    
+    /**
+     * @return string|null
+     */
     public function getSlug(): ?string
     {
         return $this->slug;

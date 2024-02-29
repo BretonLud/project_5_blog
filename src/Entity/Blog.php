@@ -26,6 +26,10 @@ class Blog
         return $this->id;
     }
     
+    /**
+     * @param int $id
+     * @return void
+     */
     public function setId(int $id): void
     {
         $this->id = $id;
