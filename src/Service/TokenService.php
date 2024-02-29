@@ -16,7 +16,7 @@ class TokenService
     
     public function __construct()
     {
-        $this->secret = "this_is_my_secret";
+        $this->secret = $_ENV['API_KEY'];
         date_default_timezone_set('Europe/Paris');
         $this->issuedAt = time();
         $this->expire = $this->issuedAt + 3600;
