@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Gestion des utilisateurs' %}
+
+{% block body %}
+    <div class="container table-responsive p-4">
+        <div class="mb-4">
+            <h2 class="text-center">Gestion des utilisateurs</h2>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>
+                    Prénom - Nom
+                </th>
+                <th>
+                    Role
+                </th>
+                <th>
+                    Email
+                </th>
+                <th class="text-end">
+                    Options
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>
+                        {{ user }}
+                    </td>
+
+                    <td>
+                        {% if user.role == 'ADMIN' %}
+                            Administrateur
+                        {% else %}
+                            Utilisateur
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {{ user.email }}
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-end">
+                            {% if app.user != user %}
+                                <a href="/admin/user/edit/{{ user.slug }}">
+                                    <i class="bi bi-pencil-fill p-1"></i>
+                                </a>
+                                <form method="POST" action="/admin/user/delete/{{ user.slug }}"
+                                      onsubmit="return confirm('Êtes vous de vouloir supprimer cet utilisateur?')">
+                                    <button type="submit" class="p-0 border-0 bg-transparent">
+                                        <i class="bi bi-trash-fill text-danger p-1"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
