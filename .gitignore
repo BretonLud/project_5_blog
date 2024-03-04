@@ -1,3 +1,4 @@
 /vendor/
 src/Database/Connection.php
 /.env.local
+/node_modules/*
