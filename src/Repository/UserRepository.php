@@ -11,6 +11,10 @@ class UserRepository
     {
     }
     
+    /**
+     * @param string $slug
+     * @return User|null
+     */
     public function findBySlug(string $slug): ?User
     {
         $database = $this->connection->getConnection();
@@ -22,7 +26,7 @@ class UserRepository
         
         
         if ($row) {
-            $user = $this->getUser($row);
+            $user = $this->setUser($row);
         } else {
             $user = null;
         }
@@ -30,6 +34,9 @@ class UserRepository
         return $user;
     }
     
+    /**
+     * @return array
+     */
     public function findAll(): array
     {
         $database = $this->connection->getConnection();
@@ -38,7 +45,7 @@ class UserRepository
         
         $users = [];
         while (($row = $statement->fetch())) {
-            $user = $this->getUser($row);
+            $user = $this->setUser($row);
             
             $users[] = $user;
         }
@@ -47,10 +54,68 @@ class UserRepository
     }
     
     /**
+     * @param string $email
+     * @return User|null
+     */
+    public function findByEmail(string $email): ?User
+    {
+        $database = $this->connection->getConnection();
+        $statement = $database->prepare('SELECT * from user where user.email = :email');
+        $statement->bindParam(':email', $email);
+        $statement->execute();
+        
+        $row = $statement->fetch();
+        
+        if ($row) {
+            $user = $this->setUser($row);
+        } else {
+            $user = null;
+        }
+        
+        return $user;
+    }
+    
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function addUser(User $user): bool
+    {
+        
+        $firstname = $user->getFirstname();
+        $lastname = $user->getLastname();
+        $email = $user->getEmail();
+        $password = $user->getPassword();
+        $role = $user->getRole();
+        $slug = $user->getSlug();
+        $validated = $user->getValidated() ? 1 : 0;
+        
+        $database = $this->connection->getConnection();
+        $statement = $database->prepare('INSERT INTO user (firstname, lastname, email, password, role, slug, validated)
+                            VALUES (:firstname, :lastname, :email, :password, :role, :slug, :validated)');
+        $statement->bindParam(':firstname', $firstname);
+        $statement->bindParam(':lastname', $lastname);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':password', $password);
+        $statement->bindParam(':role', $role);
+        $statement->bindParam(':slug', $slug);
+        $statement->bindParam(':validated', $validated);
+        
+        try {
+            $statement->execute();
+        } catch (\Exception $exception) {
+            $_SESSION['errors'] = $exception->getMessage();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
      * @param mixed $row
      * @return User
      */
-    private function getUser(mixed $row): User
+    private function setUser(mixed $row): User
     {
         $user = new User();
         $user->setSlug($row['slug']);
@@ -60,6 +125,94 @@ class UserRepository
         $user->setRole($row['role']);
         $user->setValidated($row['validated']);
         $user->setId($row['id']);
+        
+        if (array_key_exists('password', $row)) {
+            $user->setPassword($row['password']);
+        }
+        
         return $user;
+    }
+    
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function updateUser(User $user): bool
+    {
+        
+        $id = $user->getId();
+        $firstname = $user->getFirstname();
+        $lastname = $user->getLastname();
+        $email = $user->getEmail();
+        $password = $user->getPassword();
+        $role = $user->getRole();
+        $slug = $user->getSlug();
+        $validated = $user->getValidated() ? 1 : 0;
+        
+        $database = $this->connection->getConnection();
+        $statement = $database->prepare('UPDATE user SET firstname = :firstname, lastname = :lastname, email = :email, password = :password, role = :role, slug = :slug, validated = :validated WHERE id = :id');
+        $statement->bindParam(':id', $id);
+        $statement->bindParam(':firstname', $firstname);
+        $statement->bindParam(':lastname', $lastname);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':password', $password);
+        $statement->bindParam(':role', $role);
+        $statement->bindParam(':slug', $slug);
+        $statement->bindParam(':validated', $validated);
+        
+        try {
+            $statement->execute();
+        } catch (\Exception $exception) {
+            $_SESSION['errors'] = $exception->getMessage();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function updateProfil(User $user): bool
+    {
+        $id = $user->getId();
+        $firstname = $user->getFirstname();
+        $lastname = $user->getLastname();
+        $email = $user->getEmail();
+        $slug = $user->getSlug();
+        
+        $database = $this->connection->getConnection();
+        $statement = $database->prepare('UPDATE user SET firstname = :firstname, lastname = :lastname, email = :email, slug = :slug WHERE id = :id');
+        $statement->bindParam(':id', $id);
+        $statement->bindParam(':firstname', $firstname);
+        $statement->bindParam(':lastname', $lastname);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':slug', $slug);
+        
+        try {
+            $statement->execute();
+        } catch (\Exception $exception) {
+            $_SESSION['errors'] = $exception->getMessage();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function updatePassword(User $getUser, mixed $password): bool
+    {
+        
+        $id = $getUser->getId();
+        $database = $this->connection->getConnection();
+        $statement = $database->prepare('UPDATE user SET password = :password WHERE id = :id');
+        $statement->bindParam(':id', $id);
+        $statement->bindParam(':password', $password);
+        
+        try {
+            $statement->execute();
+        } catch (\Exception $exception) {
+            $_SESSION['errors'] = $exception->getMessage();
+            return false;
+        }
+        
+        return true;
+        
     }
 }

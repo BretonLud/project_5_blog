@@ -4,5 +4,5 @@ namespace App\Router;
 
 class RouterException extends \Exception
 {
-    protected $message = "Cette route n'existe pas";
+    protected $message = "No matching routes";
 }

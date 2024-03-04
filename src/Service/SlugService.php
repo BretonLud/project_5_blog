@@ -10,7 +10,11 @@ class SlugService
         $this->slug = $this->slugify($this->slug);
     }
     
-    private function slugify($text): string
+    /**
+     * @param string $text
+     * @return string
+     */
+    private function slugify(string $text): string
     {
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
@@ -26,16 +30,20 @@ class SlugService
         return $text;
     }
     
-    public function updateSlug(): void
+    /**
+     * @param $entityId
+     * @return void
+     */
+    public function updateSlug($entityId = null): void
     {
         $existing = $this->repository->findBySlug($this->slug);
         
-        if ($existing !== null && $existing->getId() !== $this->entity->getId()) {
-            $counter = 2;
+        if ($existing !== null && ($entityId === null || $existing->getId() !== $entityId)) {
+            $counter = 1;
             
             $newSlug = "";
             
-            while ($existing !== null) {
+            while ($existing !== null && ($entityId === null || $existing->getId() !== $entityId)) {
                 $newSlug = $this->slug . '-' . $counter;
                 $existing = $this->repository->findBySlug($newSlug);
                 $counter++;

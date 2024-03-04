@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center vh-100">
+            <div class="col col-xl-10">
+                <div class="card" style="border-radius: 1rem;">
+                    <div class="row g-0">
+                        <div class="col-md-6 col-lg-5 d-none d-md-flex  justify-content-center
+                        align-items-center">
+                            <img src=""
+                                 alt="login site" class="img-fluid"/>
+                        </div>
+                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="card-body p-4 p-lg-5 text-black">
+                                <form action="" name="register_form" method="post" class="needs-validation" novalidate>
+                                    <h5 class="fw-normal mb-3 pb-3"
+                                        style="letter-spacing: 1px;">S'inscrire</h5>
+                                    <div class="form-floating mb-4">
+                                        <input type="email" name="email"
+                                               id="inputEmail" class="form-control form-control-lg {{ (error.email or error.callback) ? 'is-invalid' }}"
+                                               autocomplete="Email" required autofocus placeholder="Email">
+                                        <label for="inputEmail"
+                                               class="form-label">Email</label>
+                                        {% if error.email %}
+                                            <div class="invalid-feedback">
+                                                {{ error.email }}
+                                            </div>
+                                        {% endif %}
+                                        {% if error.callback %}
+                                            <div class="invalid-feedback">
+                                                {{ error.callback }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-floating mb-4">
+                                        <input type="text" name="firstname"
+                                               id="inputFirstname" class="form-control form-control-lg {{ (error.firstname) ? 'is-invalid' }}"
+                                               required autofocus placeholder="Prénom" value="{{ (firstname) ? firstname }}">
+                                        <label for="inputFirstname"
+                                               class="form-label">Prénom</label>
+                                        {% if error.firstname %}
+                                            <div class="invalid-feedback">
+                                                {{ error.firstname }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-floating mb-4">
+                                        <input type="text" name="lastname"
+                                               id="inputLastname" class="form-control form-control-lg {{ (error.lastname) ? 'is-invalid' }}"
+                                               required autofocus placeholder="Nom de famille" value="{{ (lastname) ? lastname }}">
+                                        <label for="inputLastname"
+                                               class="form-label">Nom de famille</label>
+                                        {% if error.lastname %}
+                                            <div class="invalid-feedback">
+                                                {{ error.lastname }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-floating mb-4">
+                                        <input
+                                                type="password"
+                                                name="password"
+                                                id="inputPassword"
+                                                class="form-control {{ (error.password) ? 'is-invalid' }}"
+                                                autocomplete="current-password"
+                                                required
+                                                placeholder="password"
+                                        >
+                                        <label for="inputPassword">Mot de passe</label>
+                                        {% if error.password %}
+                                            <div class="invalid-feedback">
+                                                {{ error.password }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-floating mb-4">
+                                        <input
+                                                type="password"
+                                                name="confirm_password"
+                                                id="inputConfirmPassword"
+                                                class="form-control {{ (error.confirm_password) ? 'is-invalid' }}"
+                                                autocomplete="current-password"
+                                                required
+                                                placeholder="Confirm password"
+                                        >
+                                        <label for="inputConfirmPassword">Confirmer le mot de passe</label>
+                                        {% if error.confirm_password %}
+                                            <div class="invalid-feedback">
+                                                {{ error.confirm_password }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="pt-1 mb-4">
+                                        <button class="btn btn-dark btn-lg btn-block"
+                                                type="submit">S'inscrire
+                                        </button>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <a href="/reset-password/index" class="small text-muted">
+                                            Mot de passe oublié</a>
+                                        <a href="/login" class="small text-muted">
+                                            Se connecter</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

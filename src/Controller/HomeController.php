@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 
+use App\Entity\User;
+use App\Http\RedirectResponse;
 use App\Http\Response;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -18,7 +20,12 @@ class HomeController extends Controller
      */
     public function index(): Response
     {
-        $html = $this->twig->render('home/index.html.twig');
+        /** @var User $user */
+        $user = $this->getUser();
+        
+        $html = $this->twig->render('home/index.html.twig', [
+            'user' => $user,
+        ]);
         
         return new Response($html);
     }

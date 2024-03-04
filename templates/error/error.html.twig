@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ errorCode }} : {{ errorMessage }} {% endblock %}
+
+{% block body %}
+    <h1>{{ errorCode }}</h1>
+    <h2>{{ errorMessage }}</h2>
+{% endblock %}

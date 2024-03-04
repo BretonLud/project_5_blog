@@ -2,6 +2,7 @@
 
 namespace App\Router;
 
+use App\Http\RedirectResponse;
 use App\Http\Response;
 
 class Router
@@ -40,6 +41,7 @@ class Router
                 $response = $route->call();
                 
                 if ($response instanceof Response) {
+                    
                     $response->send();
                 }
                 
@@ -47,7 +49,7 @@ class Router
             }
         }
         
-        throw new RouterException('No matching routes');
+        throw new RouterException('No matching routes', 404);
     }
     
     /**
