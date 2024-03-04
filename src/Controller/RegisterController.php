@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Abstract\AbstractController;
 use App\Database\Connection;
 use App\Entity\User;
 use App\Http\RedirectResponse;
@@ -12,13 +13,13 @@ use App\Service\SlugService;
 use App\Service\TokenService;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validatable;
+use Respect\Validation\Validator as v;
 use Swift_DependencyException;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Respect\Validation\Validator as v;
 
-class RegisterController extends Controller
+class RegisterController extends AbstractController
 {
     /**
      * @throws SyntaxError
@@ -146,6 +147,10 @@ class RegisterController extends Controller
      */
     public function resendVerifyEmail(string $slug): RedirectResponse
     {
+        if (!$this->getUser()) {
+            return new RedirectResponse('/login');
+        }
+        
         if ($this->getUser()->getValidated()) {
             return new RedirectResponse('/');
         }
