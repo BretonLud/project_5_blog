@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Gestion des blogs {% endblock %}
+
+{% block body %}
+    <div class="container table-responsive p-4">
+        <div class="mb-4">
+            <h2 class="text-center">{{ block('title') }}</h2>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>
+                    Titre
+                </th>
+                <th>
+                    Créateur
+                </th>
+                <th>
+                    Date de création
+                </th>
+                <th>
+                    Dernière mise à jour
+                </th>
+                <th class="text-end">
+                    Options
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for blog in blogs %}
+                <tr>
+                    <td>
+                        {{ blog.title }}
+                    </td>
+
+                    <td>
+                        {{ blog.user }}
+                    </td>
+
+                    <td>
+                        {{ blog.createdAt|date('d/m/Y H:i') }}
+                    </td>
+                    <td>
+                        {{ blog.updatedAt|date('d/m/Y H:i') }}
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-end">
+                            <a href="/admin/blog/edit/{{ blog.slug }}">
+                                <i class="bi bi-pencil-fill p-1"></i>
+                            </a>
+                            <form method="POST" action="/admin/blog/delete/{{ blog.slug }}"
+                                  onsubmit="return confirm('Êtes vous de vouloir supprimer ce blog ?')">
+                                <button type="submit" class="p-0 border-0 bg-transparent">
+                                    <i class="bi bi-trash-fill text-danger p-1"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <th colspan="10">
+                        Pas de blogs créés
+                    </th>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <th colspan="10">
+                    <div class="d-flex justify-content-between">
+                        <a href="/admin" class="btn btn-warning">
+                            <i class="bi bi-arrow-return-left"></i>
+                        </a>
+                        <a href="/admin/blog/create" class="btn btn-primary">Créer un blog</a>
+                    </div>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+{% endblock %}

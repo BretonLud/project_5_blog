@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Créer un blog' %}
+
+{% block body %}
+    <div class="container m-auto">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col col-xl-10">
+                <div style="border-radius: 1rem;">
+                    <div class="d-flex align-items-center">
+                        <div class="card-body p-4 p-lg-5 text-black">
+                            <div class="p-3">
+                                <h2 class="text-center">{{ block('title') }}</h2>
+                            </div>
+                            {{ include('admin/blog/_form.html.twig') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
