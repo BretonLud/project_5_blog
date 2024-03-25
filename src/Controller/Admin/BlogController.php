@@ -9,6 +9,7 @@ use App\Entity\Picture;
 use App\Http\RedirectResponse;
 use App\Http\Response;
 use App\Repository\BlogRepository;
+use App\Repository\CommentRepository;
 use App\Repository\PictureRepository;
 use App\Service\SlugService;
 use Exception;
@@ -27,12 +28,14 @@ class BlogController extends AbstractController
     private const UPLOAD_DIR = ROOT . "/public/pictures/";
     private const PICTURES_KEY = 'pictures';
     private const NAME_KEY = 'name';
+    private CommentRepository $commentRepository;
     
     public function __construct()
     {
         parent::__construct();
         $this->blogRepository = new BlogRepository();
         $this->pictureRepository = new PictureRepository();
+        $this->commentRepository = new CommentRepository();
     }
     
     /**
