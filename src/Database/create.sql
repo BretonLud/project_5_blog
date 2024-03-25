@@ -23,6 +23,7 @@ CREATE TABLE blog
     updated_at DATETIME     NOT NULL,
     content    TEXT         NOT NULL,
     slug       VARCHAR(255) NOT NULL UNIQUE,
+    summary    varchar(255) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
