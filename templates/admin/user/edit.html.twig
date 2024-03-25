@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'utilisateur : {{ user }} {% endblock %}
+
+{% block body %}
+    <div class="container m-auto">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col col-xl-10">
+                <div style="border-radius: 1rem;">
+                    <div class="row g-0">
+                        <div class="col-md-6 col-lg-5 d-none d-md-flex  justify-content-center
+                        align-items-center">
+                            <img src=""
+                                 alt="logo" class="img-fluid"/>
+                        </div>
+                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="card-body p-4 p-lg-5 text-black">
+                                <form action="" method="post">
+                                    <div class="p-3">
+                                        <h2 class="text-center">Modifier l'utilisateur : {{ user }}</h2>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-floating mb-3">
+                                            <input type="email" name="email" id="email" required value="{{ (email) ? email : user.email }}" placeholder="Email"
+                                                   class="form-control {{ (error.email or error.callback) ? 'is-invalid' }}">
+                                            <label for="email">Email</label>
+                                            {% if error.email %}
+                                                <div class="invalid-feedback">
+                                                    {{ error.email }}
+                                                </div>
+                                            {% endif %}
+                                            {% if error.callback %}
+                                                <div class="invalid-feedback">
+                                                    {{ error.callback }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="firstname" id="firstname" required value="{{ user.firstname }}" placeholder="Prénom"
+                                                   class="form-control {{ (error.firstname) ? 'is-invalid' }}">
+                                            <label for="firstname">Prénom</label>
+                                            {% if error.firstname %}
+                                                <div class="invalid-feedback">
+                                                    {{ error.firstname }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input type="text" name="lastname" id="lastname" required value="{{ user.lastname }}" placeholder="Nom"
+                                                   class="form-control {{ (error.lastname) ? 'is-invalid' }}">
+                                            <label for="lastname">Nom</label>
+                                            {% if error.lastname %}
+                                                <div class="invalid-feedback">
+                                                    {{ error.lastname }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <select name="role" id="role" class="form-control {{ (error.role) ? 'is-invalid' }}" value="{{ user.role }}">
+                                                <option value="">Sélectionner un role</option>
+                                                <option value="ADMIN" {{ (user.role == 'ADMIN') ? 'selected' }}>Administrateur</option>
+                                                <option value="USER" {{ (user.role == 'USER') ? 'selected' }}>Utilisateur</option>
+                                            </select>
+                                            <label for="role">Role</label>
+                                            {% if error.role %}
+                                                <div class="invalid-feedback">
+                                                    {{ error.role }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class=" d-flex justify-content-between">
+                                        <a href="/admin/user" class="btn btn-warning"><i class="bi
+                                    bi-arrow-return-left"></i></a>
+                                        <button type="submit" class="btn-primary btn">
+                                            Modifier
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

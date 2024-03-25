@@ -17,23 +17,283 @@
 <body>
 <header>
     <nav>
-        {% if user %}
-            {{ user }}
+        <nav class="navbar navbar-expand-lg bg-white p-3 shadow ">
+            <div class="container-fluid">
+                <div class="img-fluid w-25">
+                    <a href="/">
+                        <img class="w-100" src=""
+                             alt="logo">
+                    </a>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon">
+                  <span class="bar bar-1"></span>
+                  <span class="bar bar-2"></span>
+                  <span class="bar bar-3"></span>
+                </span>
+                </button>
+                <div class="collapse navbar-collapse z-3" id="navbarNav">
+                    <ul class="navbar-nav justify-content-around w-100 fw-bold text-center">
+                        {% if app.user %}
+                            {% if app.user.role == 'ADMIN' %}
+                                <li class="nav-item mt-lg-auto mb-lg-auto dropdown me-lg-3 mb-3 mt-3">
+                                    <a href="/admin">Administration</a>
+                                </li>
+                            {% endif %}
+                            <li class="nav-item mt-lg-auto mb-lg-auto dropdown me-lg-3 mb-3 mt-3">
+                                Blogs
+                            </li>
+                            <li class="nav-item mt-lg-auto mb-lg-auto dropdown me-lg-3 mb-3 mt-3">
+                                Mes commentaires
+                            </li>
+                            <li class="nav-item mt-lg-auto mb-lg-auto dropdown me-lg-3 mb-3 mt-3">
+                                Contact
+                            </li>
+                            <li class="nav-item mt-lg-auto mb-lg-auto ms-auto me-auto me-lg-0">
+                                <div class="d-flex justify-content-around flex-column flex-lg-row">
+                                    <a href="/profil"
+                                       class="nav-link bg-primary text-white rounded-pill p-2 me-lg-5 mb-3 mb-lg-auto
+                                   mt-lg-auto">
+                                        <div class="d-flex justify-content-center h-100 align-items-center">
+                                            <i class="bi bi-person-circle me-3"></i>
+                                            {{ app.user }}
+                                        </div>
+                                    </a>
+                                    <a href="/logout"
+                                       class="nav-link text-center">
+                                        <i class="bi bi-power text-success" style="font-size: 1.5rem"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="nav-item mt-lg-auto mb-lg-auto dropdown me-lg-3 mb-3 mt-3">
+                                Blogs
+                            </li>
+                            <li class="nav-item mt-lg-auto mb-lg-auto dropdown me-lg-3 mb-3 mt-3">
+                                Contact
+                            </li>
+                            <li class="nav-item mt-lg-auto mb-lg-auto ms-auto me-auto me-lg-0">
+                                <div class="d-flex justify-content-around flex-column flex-lg-row">
+                                    <a href="/login"
+                                       class="nav-link text-center">
+                                        <i class="bi bi-power text-danger" style="font-size: 1.5rem"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        {% endif %}
+                        {#  {% if app.user.verified %}
+                            {% if is_granted('ROLE_TECHNICIAN_SUP') %}
+                                <li class="nav-item mt-lg-auto mb-lg-auto dropdown me-lg-3 mb-3 mt-3">
+                                    <a href="{{ path('app_admin_index') }}"
+                                       class="nav-link {% if path starts with 'app_admin' and not path starts with
+                                           'app_admin_client' %}active{% endif %}
+                                   dropdown-toggle"
+                                       role="button" data-bs-toggle="dropdown" aria-expanded="false" id="adminDropdown">
+                                        {% trans %}Administration{% endtrans %}
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <li>
+                                                <a href="{{ path('app_admin_showAdmin') }}" class="dropdown-item">
+                                                    {% trans %}Admin{% endtrans %}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ path('app_admin_config_show') }}" class="dropdown-item">
+                                                    Config
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ path('app_admin_category_index') }}" class="dropdown-item">
+                                                    {% trans %}Categories{% endtrans %}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ path('app_admin_form_index') }}" class="dropdown-item">
+                                                    {% trans %}Forms Model{% endtrans %}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if is_granted('ROLE_TECHNICIAN_SUP') %}
+                                            <li>
+                                                <a href="{{ path('app_admin_technicians_show') }}"
+                                                   class="dropdown-item">
+                                                    {% trans %}Technicians{% endtrans %}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_TECHNICIAN') %}
+                                <li class="nav-item mt-lg-auto mb-lg-auto dropdown me-lg-3  mb-3">
+                                    <a href="{{ path('app_admin_clients_show') }}" class="dropdown-toggle nav-link {% if
+                                        path starts with 'app_admin_client' %}active{% endif %}"
+                                       role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false" id="clientDropdown">
+                                        Client
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="clientDropdown">
+                                        <li>
+                                            <a href="{{ path('app_admin_clients_show') }}"
+                                               class="dropdown-item">{% trans %}List clients{% endtrans %}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('app_admin_clients_create', {path: path}) }}"
+                                               class="dropdown-item">
+                                                {% trans %}Create client{% endtrans %}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% elseif is_granted('ROLE_CLIENT_ADMIN') %}
 
-            <a href="/profil">Mon profil</a>
-        {% endif %}
+                                <li class="nav-item mt-lg-auto mb-lg-auto dropdown me-lg-3  mb-3">
+                                    <a href="" class="dropdown-toggle nav-link {% if
+                                        path starts with 'app_admin_client' %}active{% endif %}"
+                                       role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false" id="clientDropdown">
+                                        {% trans %}Operator management{% endtrans %}
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="clientDropdown">
+                                        <li>
+                                            <a href="{{ path('app_client_index') }}" class="dropdown-item">{% trans %}List opérator{% endtrans %}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('app_client_create') }}"
+                                               class="dropdown-item">
+                                                {% trans %}Create operator{% endtrans %}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                            <li class="nav-item mt-lg-auto mb-lg-auto dropdown me-lg-3  mb-3">
+                                <a href="{{ path('app_intervention_index') }}"
+                                   class="nav-link {% if path starts with 'app_intervention' %}active{% endif %}
+                               dropdown-toggle {{ (app.user.client) ? 'mt-3 mt-lg-auto' }}" data-bs-toggle="dropdown"
+                                   aria-expanded="false"
+                                   id="interDropdown">
+                                    {% trans %}Intervention{% endtrans %}
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="interDropdown">
+                                    <li>
+                                        <a href="{{ path('app_intervention_index', {status: 'null'}) }}"
+                                           class="dropdown-item">
+                                            {% trans %}List intervention{% endtrans %}
+                                        </a>
+                                    </li>
+                                    {% if is_granted('ROLE_TECHNICIAN') %}
+                                        <li>
+                                            <a href="{{ path('app_intervention_index', {status: 'On hold'}) }}"
+                                               class="dropdown-item">
+                                                {% trans %}On hold{% endtrans %}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('app_intervention_index', {status: 'In progress'}) }}"
+                                               class="dropdown-item">
+                                                {% trans %}In progress{% endtrans %}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('app_intervention_index', {status: 'Ended'}) }}"
+                                               class="dropdown-item">
+                                                {% trans %}Ended{% endtrans %}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if app.user.client %}
+                                        <li>
+                                            <a href="{{ path('app_intervention_new', {slug: app.user.client.slug}) }}"
+                                               class="dropdown-item">
+                                                {% trans %}Create inter{% endtrans %}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                            <li class="nav-item mt-lg-auto mb-lg-auto me-lg-3 mb-3">
+                                <a href="{{ path('app_calendar_index') }}"
+                                   class="nav-link {% if path starts with 'app_calendar' %}active{% endif %}">
+                                    {% trans %}Calendar{% endtrans %}
+                                </a>
+                            </li>
+                            {% if is_granted('ROLE_TECHNICIAN') %}
 
-        {% if validated %}
-            <div class="flex justify-content-center align-items-center message container mt-3">
-                <div class="alert alert-danger">Votre compte n'est pas validé, pour recevoir un nouveau mail de validation, merci de cliquer: <a
-                            href="/resend-verify-email/{{ user.slug }}" class="fw-bold">ICI</a>
+                                <li class="nav-item mt-lg-auto mb-lg-auto me-lg-3 mb-3">
+                                    <a href="{{ path('app_parc_client_select') }}"
+                                       class="nav-link {% if path starts with 'app_parc' %}active{% endif %}">
+                                        {% trans %}Parcs clients{% endtrans %}
+                                    </a>
+                                </li>
+                                <li class="nav-item mt-lg-auto mb-lg-auto dropdown me-lg-3 mb-3">
+                                    <a href="{{ path('app_project_index') }}"
+                                       class="nav-link {% if path starts with 'app_project' %}active{% endif %}
+                                   dropdown-toggle" id="projectDropdown" data-bs-toggle="dropdown"
+                                       aria-expanded="false">
+                                        {% trans %}Project{% endtrans %}
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="projectDropdown">
+                                        <li>
+                                            <a href="{{ path('app_project_index') }}" class="dropdown-item">
+                                                {% trans %}List projects{% endtrans %}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('app_project_new') }}" class="dropdown-item">
+                                                {% trans %}New project{% endtrans %}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <li class="nav-item mt-lg-auto mb-lg-auto me-lg-3 mb-3">
+                                    <a href="{{ path('app_parc_client_show', {slug : app.user.client.slug}) }}"
+                                       class="nav-link {% if path starts with 'app_parc' %}active{% endif %}">
+                                        {% trans %}Parc {% endtrans %}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                        <li class="nav-item mt-lg-auto mb-lg-auto ms-auto me-auto me-lg-0">
+                            <div class="d-flex justify-content-around flex-column flex-lg-row">
+                                <a href="{{ path('app_profile_index') }}"
+                                   class="nav-link bg-primary text-white rounded-pill p-2 me-lg-5 mb-3 mb-lg-auto
+                                   mt-lg-auto">
+                                    <div class="d-flex justify-content-center h-100 align-items-center">
+                                        {% if app.user.imageName %}
+                                            <img src="{{ vich_uploader_asset(app.user, 'imageFile') }}" alt="user
+                                    profile
+                                    image" height="30px" width="30px" class="rounded-5 me-3">
+                                        {% else %}
+                                            <i class="bi bi-person-circle me-3"></i>
+                                        {% endif %}
+                                        {{ app.user }}
+                                    </div>
+                                </a>
+                                <a href="{{ path('app_logout') }}"
+                                   class="nav-link text-center">
+                                    <i class="bi bi-power text-success" style="font-size: 1.5rem"></i>
+                                </a>
+                            </div>
+                        </li> #}
+                    </ul>
                 </div>
             </div>
-        {% endif %}
+        </nav>
     </nav>
 </header>
+{% if app.user is not empty and app.user.validated == false %}
 
-<div class="container-lg d-flex flex-column flex-grow-1">
+    <div class="flex justify-content-center align-items-center message container mt-3">
+        <div class="alert alert-danger">Votre compte n'est pas validé, pour recevoir un nouveau mail de validation, merci de cliquer: <a
+                    href="/resend-verify-email/{{ user.slug }}" class="fw-bold">ICI</a>
+        </div>
+    </div>
+{% endif %}
+<div class="container-lg d-flex flex-column flex-grow-1 pb-5">
     {% for message in success %}
         <div class="flex justify-content-center align-items-center message container mt-3">
             <div class="alert alert-success">{{ message }}</div>
@@ -47,12 +307,5 @@
     {% endfor %}
     {% block body %}{% endblock %}
 </div>
-<footer>
-    {% if user %}
-        <a href="/logout">Se déconnecter</a>
-    {% else %}
-        <a href="/login">Se connecter</a>
-    {% endif %}
-</footer>
 </body>
 </html>

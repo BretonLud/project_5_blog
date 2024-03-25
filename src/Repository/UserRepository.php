@@ -104,7 +104,7 @@ class UserRepository
         try {
             $statement->execute();
         } catch (\Exception $exception) {
-            $_SESSION['errors'] = $exception->getMessage();
+            $_SESSION['errors'][] = $exception->getMessage();
             return false;
         }
         
@@ -163,7 +163,7 @@ class UserRepository
         try {
             $statement->execute();
         } catch (\Exception $exception) {
-            $_SESSION['errors'] = $exception->getMessage();
+            $_SESSION['errors'][] = $exception->getMessage();
             return false;
         }
         
@@ -189,17 +189,17 @@ class UserRepository
         try {
             $statement->execute();
         } catch (\Exception $exception) {
-            $_SESSION['errors'] = $exception->getMessage();
+            $_SESSION['errors'][] = $exception->getMessage();
             return false;
         }
         
         return true;
     }
     
-    public function updatePassword(User $getUser, mixed $password): bool
+    public function updatePassword(User $user, mixed $password): bool
     {
         
-        $id = $getUser->getId();
+        $id = $user->getId();
         $database = $this->connection->getConnection();
         $statement = $database->prepare('UPDATE user SET password = :password WHERE id = :id');
         $statement->bindParam(':id', $id);
@@ -208,11 +208,56 @@ class UserRepository
         try {
             $statement->execute();
         } catch (\Exception $exception) {
-            $_SESSION['errors'] = $exception->getMessage();
+            $_SESSION['errors'][] = $exception->getMessage();
             return false;
         }
         
         return true;
         
+    }
+    
+    public function updateRole(User $user): bool
+    {
+        $id = $user->getId();
+        $firstname = $user->getFirstname();
+        $lastname = $user->getLastname();
+        $email = $user->getEmail();
+        $slug = $user->getSlug();
+        $role = $user->getRole();
+        
+        $database = $this->connection->getConnection();
+        $statement = $database->prepare('UPDATE user SET role = :role, firstname = :firstname, lastname = :lastname, email = :email, slug = :slug WHERE id = :id');
+        $statement->bindParam(':id', $id);
+        $statement->bindParam(':firstname', $firstname);
+        $statement->bindParam(':lastname', $lastname);
+        $statement->bindParam(':email', $email);
+        $statement->bindParam(':slug', $slug);
+        $statement->bindParam(':role', $role);
+        
+        try {
+            $statement->execute();
+        } catch (\Exception $exception) {
+            $_SESSION['errors'][] = $exception->getMessage();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public function delete(User $user): bool
+    {
+        
+        $id = $user->getId();
+        $database = $this->connection->getConnection();
+        $statement = $database->prepare('DELETE FROM user WHERE id = :id');
+        $statement->bindParam(':id', $id);
+        
+        try {
+            $statement->execute();
+        } catch (\Exception $exception) {
+            $_SESSION['errors'][] = $exception->getMessage();
+            return false;
+        }
+        return true;
     }
 }

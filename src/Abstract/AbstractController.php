@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Abstract;
 
 use App\Database\Connection;
 use App\Entity\User;
@@ -9,7 +9,7 @@ use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 
-abstract class Controller
+abstract class AbstractController extends AbstractSecurity
 {
     private FilesystemLoader $loader;
     protected Environment $twig;
@@ -75,7 +75,7 @@ abstract class Controller
     private function setupTwigGlobals(): void
     {
         $sessionVariables = [
-            'error', 'errors', 'success', 'lastname', 'firstname'
+            'error', 'errors', 'success', 'lastname', 'firstname', 'email'
         ];
         
         foreach ($sessionVariables as $var) {
@@ -84,6 +84,14 @@ abstract class Controller
                 unset($_SESSION[$var]);
             }
         }
+        
+        $user = $this->getUser();
+        
+        $app = [
+            'user' => $user ?: null
+        ];
+        
+        $this->twig->addGlobal('app', $app);
     }
     
 }

@@ -19,13 +19,9 @@ $dotenv->safeLoad();
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(ROOT);
 $dotenv->load();
 
-
 $router = new Router($_GET['url']);
 
-$router->get('/admin/test/:id/:slug', "Admin\Test\Test#index")->with('id', '[0-9]+')->with('slug', '[0-9\-a-z]+');
 $router->get('/', "Home#index");
-$router->get('/admin/user/:slug', "Admin\User#edit")->with('slug', '[0-9\-a-z]+');
-$router->get('/admin/user', "Admin\User#index");
 $router->get('/login', "Security#login");
 $router->get('/logout', 'Security#logout');
 $router->get('/register', 'Register#register');
@@ -37,6 +33,10 @@ $router->get('/reset-password/verify-token/', 'ResetPassword#verifyResetPassword
 $router->get('/reset-password', 'ResetPassword#resetPassword');
 $router->get('/profil', 'User\User#index');
 $router->get('/profil/edit-password', 'User\User#editPassword');
+$router->get('/admin', 'Admin\Admin#index');
+$router->get('/admin/user/edit/:slug', "Admin\User#edit")->with('slug', '[0-9\-a-z]+');
+$router->get('/admin/user', "Admin\User#index");
+$router->get('/admin/test/:id/:slug', "Admin\Test\Test#index")->with('id', '[0-9]+')->with('slug', '[0-9\-a-z]+');
 
 $router->post('/login', 'Security#handleLoginSubmit');
 $router->post('/register', 'Register#handleRegisterSubmit');
@@ -44,6 +44,8 @@ $router->post('/reset-password/index', 'ResetPassword#handleResetPasswordSubmit'
 $router->post('/reset-password', 'ResetPassword#resetPassword');
 $router->post('/profil', 'User\User#index');
 $router->post('/profil/edit-password', 'User\User#editPassword');
+$router->post('/admin/user/edit/:slug', "Admin\User#edit")->with('slug', '[0-9\-a-z]+');
+$router->post('/admin/user/delete/:slug', "Admin\User#delete")->with('slug', '[0-9\-a-z]+');
 
 
 try {

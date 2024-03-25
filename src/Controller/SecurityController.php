@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Abstract\AbstractController;
 use App\Database\Connection;
 use App\Http\RedirectResponse;
 use App\Http\Response;
@@ -11,7 +12,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
     
     

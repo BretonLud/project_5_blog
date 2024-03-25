@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Administration' %}
+
+{% block body %}
+    <div class="container mt-auto mb-auto">
+        <h1 class="text-center mt-5 mb-5">Administration</h1>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header bg-primary-subtle text-center">
+                        <h2>Utilisateurs</h2>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <a href="/admin/user">Gestion des utilisateurs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header bg-primary-subtle text-center">
+                        <h2>Blogs</h2>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <a href="./blog">Gestion des blogs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header bg-primary-subtle text-center">
+                        <h2>Commentaires</h2>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <a href="./comment">Gestions des commentaires</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
