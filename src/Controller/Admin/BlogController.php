@@ -58,9 +58,14 @@ class BlogController extends AbstractController
     }
     
     
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     * @throws Exception
+     */
     public function create(): Response|RedirectResponse
     {
-        //Validation logic common for create and edit
         $response = $this->preHandle('create');
         
         if (!is_null($response)) {
@@ -70,39 +75,6 @@ class BlogController extends AbstractController
         $html = $this->twig->render('admin/blog/create.html.twig');
         
         return new Response($html);
-    }
-    
-    /**
-     * @return Validatable
-     */
-    private function validate(): Validatable
-    {
-        return v::key('title', v::notBlank()->stringType()->regex("/^[a-z0-9\s\-àâäéèêëïîôöùûüÿç.'?!,:;()]*$/iu")->setTemplate('Le titre est nécessaire et doit être composé de lettres et chiffre'))
-            ->key('content', v::notBlank()->stringType()->regex('/^[^<>]*$/')->setTemplate('Le texte est requis et ne doit pas être composé des symboles < et >'));
-    }
-    
-    /**
-     * @param array $post
-     * @return Blog
-     */
-    private function setBlog(array $post): Blog
-    {
-        $blog = new Blog();
-        $blog->setTitle($post['title']);
-        $blog->setContent($post['content']);
-        
-        if (strlen($post['content']) > 252) {
-            $summary = substr($post['content'], 0, 252) . '...';
-        } else {
-            $summary = $post['content'];
-        }
-        
-        $blog->setSummary($summary);
-        
-        (new SlugService($blog->getTitle(), $this->blogRepository, $blog))->updateSlug();
-        $blog->setUser($this->getUser());
-        
-        return $blog;
     }
     
     /**
@@ -131,6 +103,39 @@ class BlogController extends AbstractController
         ]);
         
         return new Response($html);
+    }
+    
+    /**
+     * @throws Exception
+     */
+    public function delete(string $slug): RedirectResponse
+    {
+        $this->isGrantedAdmin($this->getUser());
+        
+        $blog = $this->blogRepository->findBySlug($slug);
+        
+        if ($this->getUser() != $blog->getUser()) {
+            $_SESSION['errors'][] = "Impossible de supprimer un blog qui n'est pas à vous.";
+            return new RedirectResponse('/admin/blogs');
+        }
+        
+        $pictures = $blog->getPictures();
+        foreach ($pictures as $picture) {
+            $name = $picture->getName();
+            $path = ROOT . "/public/pictures/$name";
+            if (file_exists($path)) {
+                unlink($path);
+            }
+            $this->pictureRepository->delete($picture);
+        }
+        
+        $this->commentRepository->deleteByBlog($blog->getId());
+        
+        $this->blogRepository->delete($blog);
+        
+        $_SESSION['success'][] = 'Blog supprimé';
+        
+        return new RedirectResponse('/admin/blog');
     }
     
     /**
@@ -205,38 +210,7 @@ class BlogController extends AbstractController
             
         }
         
-        return null;  // No error detected
-    }
-    
-    /**
-     * @throws Exception
-     */
-    public function delete(string $slug): RedirectResponse
-    {
-        $this->isGrantedAdmin($this->getUser());
-        
-        $blog = $this->blogRepository->findBySlug($slug);
-        
-        if ($this->getUser() != $blog->getUser()) {
-            $_SESSION['errors'][] = "Impossible de supprimer un blog qui n'est pas à vous.";
-            return new RedirectResponse('/admin/blogs');
-        }
-        
-        $pictures = $blog->getPictures();
-        foreach ($pictures as $picture) {
-            $name = $picture->getName();
-            $path = ROOT . "/public/pictures/$name";
-            if (file_exists($path)) {
-                unlink($path);
-            }
-            $this->pictureRepository->delete($picture);
-        }
-        
-        $this->blogRepository->delete($blog);
-        
-        $_SESSION['success'][] = 'Blog supprimé';
-        
-        return new RedirectResponse('/admin/blog');
+        return null;
     }
     
     private function validatePictures(array $pictures): bool
@@ -339,7 +313,6 @@ class BlogController extends AbstractController
             $this->pictureRepository->updateHeader($picture);
         }
         
-        
         if ($picturesData[$index] === $picture->getName() or !$this->validatePictures($_FILES) or empty($picturesData[$index])) {
             return;
         }
@@ -362,6 +335,39 @@ class BlogController extends AbstractController
     {
         unlink(ROOT . "/public/pictures/" . $picture->getName());
         $this->pictureRepository->delete($picture);
+    }
+    
+    /**
+     * @return Validatable
+     */
+    private function validate(): Validatable
+    {
+        return v::key('title', v::notBlank()->stringType()->regex("/^[a-z0-9\s\-àâäéèêëïîôöùûüÿç.'?!,:;()]*$/iu")->setTemplate('Le titre est nécessaire et doit être composé de lettres et chiffre'))
+            ->key('content', v::notBlank()->stringType()->regex('/^[^<>]*$/')->setTemplate('Le texte est requis et ne doit pas être composé des symboles < et >'));
+    }
+    
+    /**
+     * @param array $post
+     * @return Blog
+     */
+    private function setBlog(array $post): Blog
+    {
+        $blog = new Blog();
+        $blog->setTitle($post['title']);
+        $blog->setContent($post['content']);
+        
+        if (strlen($post['content']) > 252) {
+            $summary = substr($post['content'], 0, 252) . '...';
+        } else {
+            $summary = $post['content'];
+        }
+        
+        $blog->setSummary($summary);
+        
+        (new SlugService($blog->getTitle(), $this->blogRepository, $blog))->updateSlug();
+        $blog->setUser($this->getUser());
+        
+        return $blog;
     }
     
 }
