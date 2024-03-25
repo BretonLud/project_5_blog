@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ blog.title }} {% endblock %}
+
+{% block body %}
+    <div class="container p-4 bg-body-tertiary shadow">
+        <div class="mb-4">
+            <h2 class="text-center">{{ block('title') }}</h2>
+        </div>
+        <div class="mb-3">
+            <div id="{{ blog.slug }}" class="carousel slide col-lg-4 mb-2 float-start me-4" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% set index = 0 %}
+                    {% set hasHeader = false %}
+                    {% for picture in blog.pictures %}
+                        {% if picture.header %}
+                            {% set hasHeader = true %}
+                        {% endif %}
+                    {% endfor %}
+                    {% for key, picture in blog.pictures %}
+                        {% if (not hasHeader) or picture.header or blog.pictures|length == 1 %}
+                            <div class="carousel-item {{ (key == 0) ? "active" }}">
+                                <img class="d-block w-100" src="/pictures/{{ picture.name }}" height="250" alt="{{ key }} slide">
+                            </div>
+                            {% set index = index + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% if index > 1 %}
+                    <button class="carousel-control-prev" type="button" data-bs-target="#{{ blog.slug }}" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon  bg-black" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#{{ blog.slug }}" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                {% endif %}
+            </div>
+            <div class="text-justify mb-3">
+                {{ blog.content|nl2br|raw }}
+            </div>
+            {% if blog.pictures|length != index %}
+                <div id="{{ blog.slug }}2" class="carousel slide col-lg-4 mb-2 float-end" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% set index = 0 %}
+                        {% for picture in blog.pictures %}
+                            {% if picture.header == false %}
+                                <div class="carousel-item {{ (index == 0) ? "active" }}">
+                                    <img class="d-block w-100" src="/pictures/{{ picture.name }}" height="250" alt="{{ key }} slide">
+                                </div>
+                                {% set index = index + 1 %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% if index > 1 %}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#{{ blog.slug }}2" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon  bg-black" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#{{ blog.slug }}2" data-bs-slide="next">
+                            <span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="mb-3">
+            <div class="mb-3">
+                <h3>Commentaires :</h3>
+                {% for comment in blog.comments %}
+                    {% if comment.validated %}
+                        {% if comment.user.id == app.user.id %}
+                            <div>
+                                Créer le {{ comment.createdAt|date('d/m/y H:i') }}
+                                {{ comment.content }} <a href="">Éditer</a> <a href="">Supprimé</a>
+                                {% if comment.createdAt != comment.updatedAt %}
+                                    Mis à jour le à {{ comment.updatedAt|date('d/m/y H:i') }}
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div>
+                                Créer le {{ comment.createdAt|date('d/m/y H:i') }}
+                                {{ comment.content }}
+                                {% if comment.createdAt != comment.updatedAt %}
+                                    Mis à jour le à {{ comment.updatedAt|date('d/m/y H:i') }}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    Pas de commentaire, soyez le premier à en donner un !
+                {% endfor %}
+            </div>
+            <div class="form">
+                {% if app.user %}
+                    <form action="" method="post">
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" placeholder="Commentaire" id="commentContent" name="commentContent" required style="height: 100px"></textarea>
+                            <label for="commentContent">Votre commentaire:</label>
+                            {% if error.content %}
+                                <div class="invalid-feedback">
+                                    {{ error.content }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <button class="btn btn-primary">
+                                Ajouter un commentaire
+                            </button>
+                        </div>
+                    </form>
+                {% else %}
+                    can't comment
+                {% endif %}
+            </div>
+
+        </div>
+        <div class=" d-flex justify-content-between">
+            <a href="/blogs" class="btn btn-warning"><i class="bi bi-arrow-return-left"></i></a>
+        </div>
+    </div>
+{% endblock %}
