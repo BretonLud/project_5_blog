@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use DateTime;
+use Exception;
 
 class Blog
 {
@@ -12,10 +13,18 @@ class Blog
     private \DateTime $created_at;
     private \DateTime $updated_at;
     private string $content;
+    private string $slug;
+    private array $pictures;
+    private string $summary;
+    private array $comments;
     
+    /**
+     * @throws Exception
+     */
     public function __construct()
     {
         $this->created_at = new DateTime('now');
+        $this->updated_at = new DateTime('now');
     }
     
     /**
@@ -115,5 +124,68 @@ class Blog
         $this->content = $content;
     }
     
+    /**
+     * @return string|null
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
     
+    /**
+     * @param string $slug
+     * @return void
+     */
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
+    
+    public function getPictures(): array
+    {
+        return $this->pictures;
+    }
+    
+    public function setPictures(array $pictures): void
+    {
+        $this->pictures = $pictures;
+    }
+    
+    public function getSummary(): string
+    {
+        return $this->summary;
+    }
+    
+    public function setSummary(string $summary): void
+    {
+        $this->summary = $summary;
+    }
+    
+    /**
+     * @throws Exception
+     */
+    public static function initializeFromRow(array $row, User $user): self
+    {
+        $blog = new self();
+        $blog->setUser($user);
+        $blog->setId($row['id']);
+        $blog->setTitle($row['title']);
+        $blog->setSlug($row['slug']);
+        $blog->setContent($row['content']);
+        $blog->setCreatedAt(new \DateTime($row['created_at']));
+        $blog->setUpdatedAt(new \DateTime($row['updated_at']));
+        $blog->setSummary($row['summary']);
+        
+        return $blog;
+    }
+    
+    public function getComments(): array
+    {
+        return $this->comments;
+    }
+    
+    public function setComment(array $comments): void
+    {
+        $this->comments = $comments;
+    }
 }

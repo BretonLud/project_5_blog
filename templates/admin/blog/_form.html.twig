@@ -1,0 +1,83 @@
+<form action="" method="post" enctype="multipart/form-data">
+    <div class="card-body">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control {{ (error.title) ? 'is-invalid' }}" name="title" id="title" placeholder="Titre" required value="{{ (blog) ? blog.title }}">
+            <label for="title">Titre</label>
+            {% if error.title %}
+                <div class="invalid-feedback">
+                    {{ error.title }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-floating mb-3">
+            <textarea class="form-control {{ (error.content) ? 'is-invalid' }}" placeholder="Texte du blog" id="content" name="content" required
+                      style="height: 100px">{{ (blog is defined) ? blog.content|raw }}</textarea>
+            <label for="content">Texte du blog</label>
+            {% if error.content %}
+                <div class="invalid-feedback">
+                    {{ error.content }}
+                </div>
+            {% endif %}
+        </div>
+
+        {% if blog.pictures %}
+            <div id="pictureUploadContainer" class="mb-3 row row-cols-1 row-cols-md-2">
+                {% if error.pictures %}
+                    {% for key,error in error.pictures %}
+                        <div class="flex justify-content-center align-items-center message container mt-3 w-100">
+                            <div class="alert alert-danger">L'image {{ key + 1 }} a cette erreur : {{ error.image }}</div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% set index = 0 %}
+                {% for picture in blog.pictures %}
+
+                    <div class="col mb-3 {{ (index > 0) ? 'picture-can-be-deleted' }}">
+                        <div class="form-group picture-upload mb-3 card p-3 ">
+                            <div class="mb-3">
+                                <h4>Image actuelle :</h4>
+                                <img src="/pictures/{{ picture.name }}" class="img-thumbnail" alt="Description de l'image">
+                            </div>
+                            <div class="mb-3">
+                                <label for="name{{ index }}" class="form-label">Image :</label>
+                                <input type="file" id="name{{ index }}" name="pictures[{{ index }}]" {{ (picture.name is empty) ? required }} class="form-control"
+                                       value="{{ picture.name }}">
+                            </div>
+                            <div class="form-switch mb-3 form-check">
+                                <input type="checkbox" id="header{{ index }}" name="pictures[{{ index }}][header]"
+                                       class="form-check-input" {{ (picture.header) ? 'checked' }}>
+                                <label for="header{{ index }}" class="form-check-label">Image d'en-tête</label>
+                            </div>
+                        </div>
+                    </div>
+                    {% set index = index + 1 %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div id="pictureUploadContainer" class="mb-3 row row-cols-1 row-cols-md-2">
+                <div class="col mb-3">
+                    <div class="form-group picture-upload mb-3 card p-3">
+                        <div class="mb-3">
+                            <label for="name0" class="form-label">Image :</label>
+                            <input type="file" id="name0" name="pictures[0]" required class="form-control">
+                        </div>
+                        <div class="form-switch mb-3 form-check">
+                            <input type="checkbox" id="header0" name="pictures[0][header]" class="form-check-input" checked>
+                            <label for="header0" class="form-check-label">Image d'en-tête</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <button type="button" class="btn btn-success mb-3 btn-add-image">Ajouter une autre image</button>
+    </div>
+    <div class=" d-flex justify-content-between">
+        <a href="/admin/blog" class="btn btn-warning"><i class="bi
+                                bi-arrow-return-left"></i></a>
+        <button type="submit" class="btn-primary btn">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+</form>
+
+{% block javascripts %}
+    <script src="/build/blog.js" defer></script>
+{% endblock %}

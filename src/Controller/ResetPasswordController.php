@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Abstract\AbstractController;
 use App\Database\Connection;
 use App\Entity\User;
 use App\Http\RedirectResponse;
@@ -15,7 +16,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class ResetPasswordController extends Controller
+class ResetPasswordController extends AbstractController
 {
     /**
      * @throws SyntaxError
@@ -207,12 +208,11 @@ class ResetPasswordController extends Controller
         
         $userRepository = new UserRepository(new Connection());
         
-        
         $user = $userRepository->findByEmail($decodedToken->email);
         
         $user->setPassword(password_hash($password, PASSWORD_BCRYPT));
         
-        $userRepository->updateUser($user);
+        $userRepository->updatePassword($user, $user->getPassword());
         
         $_SESSION['success'][] = 'Mot de passe réinitialisé avec succès';
         

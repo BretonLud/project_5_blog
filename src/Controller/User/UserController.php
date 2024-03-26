@@ -2,7 +2,7 @@
 
 namespace App\Controller\User;
 
-use App\Controller\Controller;
+use App\Abstract\AbstractController;
 use App\Database\Connection;
 use App\Entity\User;
 use App\Http\RedirectResponse;
@@ -16,7 +16,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class UserController extends Controller
+class UserController extends AbstractController
 {
     /**
      * @throws SyntaxError

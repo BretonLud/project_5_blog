@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
+use App\Abstract\AbstractController;
 use App\Http\Response;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class ErrorController extends Controller
+class ErrorController extends AbstractController
 {
     /**
      * @throws SyntaxError
