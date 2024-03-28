@@ -16,10 +16,10 @@ class AuthService
     /**
      * Authenticate a user.
      *
-     * @param string $username
+     * @param string $email
      * @param string $password
      *
-     * @return User|null The authenticated user, or null if authentication failed.
+     * @return RedirectResponse The authenticated user, or null if authentication failed.
      */
     public function authenticate(string $email, string $password): RedirectResponse
     {

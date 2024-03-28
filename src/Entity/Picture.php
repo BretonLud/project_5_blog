@@ -10,7 +10,7 @@ class Picture
     private Blog $blog;
     private DateTime $created_at;
     private string $name;
-    private bool $header;
+    private bool $header = false;
     private string $slug;
     
     public function __construct()
@@ -118,5 +118,17 @@ class Picture
     public function setSlug(string $slug): void
     {
         $this->slug = $slug;
+    }
+    
+    public static function initializeFromRow(array $row): self
+    {
+        $picture = new self();
+        $picture->setId($row['id']);
+        $picture->setHeader($row['header']);
+        $picture->setSlug($row['slug']);
+        $picture->setName($row['name']);
+        $picture->setCreatedAt(new \DateTime($row['created_at']));
+        
+        return $picture;
     }
 }

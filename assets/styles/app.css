@@ -1,1 +1,33 @@
 @import "~bootstrap";
+@import "bootstrap-icons";
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+ul, a {
+    text-decoration: none;
+}
+
+.notification-circle {
+    width: 40px;
+    height: 40px;
+    background-color: #f03e3e; /* Changez cela pour la couleur de fond que vous souhaitez. */
+    border-radius: 50%; /* Cela rend l'élément complètement rond. */
+    color: #ffffff; /* Changez cela pour la couleur de texte que vous souhaitez. */
+
+    /* Cela centre le texte à la fois horizontalement et verticalement. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Mise en forme du texte. */
+    font-size: 16px;
+    font-weight: bold;
+}

@@ -4,8 +4,11 @@ namespace App\Abstract;
 
 use App\Database\Connection;
 use App\Entity\User;
+use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
 use Twig\Environment;
+use Twig\Error\RuntimeError;
+use Twig\Extension\CoreExtension;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 
@@ -14,6 +17,9 @@ abstract class AbstractController extends AbstractSecurity
     private FilesystemLoader $loader;
     protected Environment $twig;
     
+    /**
+     * @throws RuntimeError
+     */
     public function __construct()
     {
         $this->loader = new FilesystemLoader(ROOT . '/templates');
@@ -59,6 +65,8 @@ abstract class AbstractController extends AbstractSecurity
     
     /**
      * @return void
+     * @throws RuntimeError
+     * @throws \Exception
      */
     private function setupTwig(): void
     {
@@ -67,10 +75,12 @@ abstract class AbstractController extends AbstractSecurity
             'debug' => true
         ));
         $this->twig->addExtension(new DebugExtension());
+        $this->twig->getExtension(CoreExtension::class)->setTimezone('Europe/Paris');
     }
     
     /**
      * @return void
+     * @throws \Exception
      */
     private function setupTwigGlobals(): void
     {
@@ -87,11 +97,19 @@ abstract class AbstractController extends AbstractSecurity
         
         $user = $this->getUser();
         
-        $app = [
-            'user' => $user ?: null
-        ];
+        $app = ['user' => $user ?: null, 'unapprovedCommentCount' => $this->getUnapprovedCommentCount()];
         
         $this->twig->addGlobal('app', $app);
     }
     
+    /**
+     * @throws \Exception
+     */
+    public function getUnapprovedCommentCount(): int
+    {
+        $commentRepository = new CommentRepository();
+        $unapprovedComments = $commentRepository->findBy(['validated' => false]);
+        
+        return count($unapprovedComments);
+    }
 }

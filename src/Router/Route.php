@@ -54,10 +54,12 @@ class Route
     
     private function getControllerCallable(): array
     {
-        $controllerAndMethodNames = explode('#', $this->callable);
-        $controllerClass = "App\\Controller\\" . $controllerAndMethodNames[0] . "Controller";
+        $controllerAndMethodNamesAndRepository = explode('#', $this->callable);
+        $controller = $controllerAndMethodNamesAndRepository[0];
+        $method = $controllerAndMethodNamesAndRepository[1];
+        $controllerClass = "App\\Controller\\" . $controller . "Controller";
         
-        return [new $controllerClass(), $controllerAndMethodNames[1]];
+        return [new $controllerClass(), $method];
     }
     
     public function getUrl($params): array|string

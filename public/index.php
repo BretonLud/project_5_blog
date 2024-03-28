@@ -4,7 +4,6 @@ use App\Controller\ErrorController;
 use App\Router\Router;
 use App\Router\RouterException;
 
-
 define('ROOT', dirname(__DIR__));
 
 require_once ROOT . '/vendor/autoload.php';
@@ -33,10 +32,17 @@ $router->get('/reset-password/verify-token/', 'ResetPassword#verifyResetPassword
 $router->get('/reset-password', 'ResetPassword#resetPassword');
 $router->get('/profil', 'User\User#index');
 $router->get('/profil/edit-password', 'User\User#editPassword');
-$router->get('/admin', 'Admin\Admin#index');
+$router->get('/admin', 'Admin\Admin#adminDashboard');
 $router->get('/admin/user/edit/:slug', "Admin\User#edit")->with('slug', '[0-9\-a-z]+');
 $router->get('/admin/user', "Admin\User#index");
 $router->get('/admin/test/:id/:slug', "Admin\Test\Test#index")->with('id', '[0-9]+')->with('slug', '[0-9\-a-z]+');
+$router->get('/admin/blog', "Admin\Blog#index#Blog");
+$router->get('/admin/blog/create', 'Admin\Blog#create');
+$router->get('/admin/blog/edit/:slug', 'Admin\Blog#edit')->with('slug', '[0-9\-a-z]+');
+$router->get('/blogs', 'Blog#index');
+$router->get('/blogs/show/:slug', 'Blog#show')->with('slug', '[0-9\-a-z]+');
+$router->get('/admin/comment', 'Admin\Comment#index');
+
 
 $router->post('/login', 'Security#handleLoginSubmit');
 $router->post('/register', 'Register#handleRegisterSubmit');
@@ -46,6 +52,12 @@ $router->post('/profil', 'User\User#index');
 $router->post('/profil/edit-password', 'User\User#editPassword');
 $router->post('/admin/user/edit/:slug', "Admin\User#edit")->with('slug', '[0-9\-a-z]+');
 $router->post('/admin/user/delete/:slug', "Admin\User#delete")->with('slug', '[0-9\-a-z]+');
+$router->post('/admin/blog/create', 'Admin\Blog#create');
+$router->post('/admin/blog/edit/:slug', 'Admin\Blog#edit')->with('slug', '[0-9\-a-z]+');
+$router->post('/admin/blog/delete/:slug', "Admin\Blog#delete")->with('slug', '[0-9\-a-z]+');
+$router->post('/blogs/show/:slug', "Blog#show")->with('slug', '[0-9\-a-z]+');
+$router->post('/admin/comment/validated/:id', 'Admin\Comment#validated')->with('id', '[0-9]+');
+$router->post('/admin/comment/delete/:id', 'Admin\Comment#delete')->with('id', '[0-9]+');
 
 
 try {

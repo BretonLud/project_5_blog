@@ -15,7 +15,7 @@ class AdminController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function index(): Response
+    public function adminDashboard(): Response
     {
         $this->isGrantedAdmin($this->getUser());
         
