@@ -89,7 +89,7 @@ class BlogController extends AbstractController
         
         if ($this->getUser() != $blog->getUser()) {
             $_SESSION['errors'][] = "Impossible de modifier un blog qui n'est pas à vous.";
-            return new RedirectResponse('/admin/blogs');
+            return new RedirectResponse('/admin/blog');
         }
         
         $response = $this->preHandle('edit', $blog);
@@ -245,7 +245,6 @@ class BlogController extends AbstractController
     
     private function uploadImages(array $pictures, Blog $blog, array $datas): void
     {
-        
         foreach ($pictures['tmp_name'] as $key => $tmp_name) {
             
             if (empty($tmp_name)) {
@@ -267,6 +266,7 @@ class BlogController extends AbstractController
             
             (new SlugService($name, $this->pictureRepository, $picture))->updateSlug();
             $this->pictureRepository->createImageForBlog($picture);
+            
             move_uploaded_file($tmp_name, ROOT . "/public/pictures/$name");
             
         }

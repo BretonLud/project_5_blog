@@ -72,7 +72,9 @@
             <div class="mb-3">
                 <h3>Commentaires :</h3>
                 {% for comment in blog.comments %}
+                    {% set oneCommentValidated = false %}
                     {% if comment.validated %}
+                        {% set oneCommentValidated = true %}
                         {% if comment.user.id == app.user.id %}
                             <div>
                                 Créer le {{ comment.createdAt|date('d/m/y H:i') }}
@@ -90,6 +92,9 @@
                                 {% endif %}
                             </div>
                         {% endif %}
+                    {% endif %}
+                    {% if not oneCommentValidated %}
+                        Pas de commentaire, soyez le premier à en donner un !
                     {% endif %}
                 {% else %}
                     Pas de commentaire, soyez le premier à en donner un !
@@ -114,7 +119,7 @@
                         </div>
                     </form>
                 {% else %}
-                    can't comment
+                    
                 {% endif %}
             </div>
 

@@ -57,7 +57,7 @@ class BlogController extends AbstractController
             throw new \Exception('Blog not found');
         }
         
-        $blog->setComment($this->commentRepository->findBy(['blog_id' => $blog->getId()], 'created_at DESC'));
+        $blog->setComments($this->commentRepository->findBy(['blog_id' => $blog->getId()], 'created_at DESC'));
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             

@@ -184,7 +184,7 @@ class Blog
         return $this->comments;
     }
     
-    public function setComment(array $comments): void
+    public function setComments(array $comments): void
     {
         $this->comments = $comments;
     }

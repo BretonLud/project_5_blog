@@ -12,7 +12,6 @@ class BlogRepository
     private Connection $connection;
     private UserRepository $userRepository;
     private PictureRepository $pictureRepository;
-    private CommentRepository $commentRepository;
     
     public function __construct()
     {
