@@ -33,7 +33,7 @@ class PictureRepository
         $statement->bindValue(':blog_id', $picture->getBlog()->getId());
         $statement->bindValue(':created_at', $picture->getCreatedAt()->format('Y-m-d H:i:s'));
         $statement->bindValue(':name', $picture->getName());
-        $statement->bindValue(':header', (int)$picture->getHeader(), \PDO::PARAM_INT);
+        $statement->bindValue(':header', $picture->getHeader(), PDO::PARAM_BOOL);
         $statement->bindValue(':slug', $picture->getSlug());
         $statement->execute();
     }
@@ -42,7 +42,7 @@ class PictureRepository
     {
         $query = "UPDATE picture SET header = :header WHERE id = :id";
         $statement = $this->database->prepare($query);
-        $statement->bindValue(':header', (int)$picture->getHeader(), \PDO::PARAM_INT);
+        $statement->bindValue(':header', $picture->getHeader(), PDO::PARAM_BOOL);
         $statement->bindValue(':id', $picture->getId());
         $statement->execute();
     }
@@ -53,7 +53,7 @@ class PictureRepository
         $statement = $this->database->prepare($query);
         $statement->bindValue(':created_at', $picture->getCreatedAt()->format('Y-m-d H:i:s'));
         $statement->bindValue(':name', $picture->getName());
-        $statement->bindValue(':header', (int)$picture->getHeader(), \PDO::PARAM_INT);
+        $statement->bindValue(':header', $picture->getHeader(), PDO::PARAM_BOOL);
         $statement->bindValue(':slug', $picture->getSlug());
         $statement->bindValue(':id', $picture->getId());
         $statement->execute();
@@ -84,7 +84,7 @@ class PictureRepository
     /**
      * @throws Exception
      */
-    public function findBySlug(string $slug): ?Picture
+    public function findBySlug(string $slug, string $action = ""): ?Picture
     {
         
         $query = "SELECT * FROM picture WHERE slug = :slug";
