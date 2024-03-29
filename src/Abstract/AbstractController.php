@@ -97,7 +97,11 @@ abstract class AbstractController extends AbstractSecurity
         
         $user = $this->getUser();
         
-        $app = ['user' => $user ?: null, 'unapprovedCommentCount' => $this->getUnapprovedCommentCount()];
+        $app = ['user' => $user ?: null];
+        
+        if ($user and $user->getRole() === "ADMIN") {
+            $app['unapprovedCommentCount'] = $this->getUnapprovedCommentCount();
+        }
         
         $this->twig->addGlobal('app', $app);
     }

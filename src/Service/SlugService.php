@@ -36,7 +36,7 @@ class SlugService
      */
     public function updateSlug($entityId = null): void
     {
-        $existing = $this->repository->findBySlug($this->slug);
+        $existing = ($entityId) ? $this->repository->findBySlug($this->slug) : $this->repository->findBySlug($this->slug, 'create');
         
         if ($existing !== null && ($entityId === null || $existing->getId() !== $entityId)) {
             $counter = 1;
@@ -45,7 +45,7 @@ class SlugService
             
             while ($existing !== null && ($entityId === null || $existing->getId() !== $entityId)) {
                 $newSlug = $this->slug . '-' . $counter;
-                $existing = $this->repository->findBySlug($newSlug);
+                $existing = ($entityId) ? $this->repository->findBySlug($newSlug) : $this->repository->findBySlug($newSlug, 'create');
                 $counter++;
             }
             

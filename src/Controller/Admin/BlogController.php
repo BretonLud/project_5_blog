@@ -129,7 +129,7 @@ class BlogController extends AbstractController
             $this->pictureRepository->delete($picture);
         }
         
-        $this->commentRepository->deleteByBlog($blog->getId());
+        $this->commentRepository->deleteByBlog($blog);
         
         $this->blogRepository->delete($blog);
         
@@ -187,7 +187,7 @@ class BlogController extends AbstractController
                     
                     $blog = $this->blogRepository->create($blog);
                     
-                    $this->uploadImages($_FILES['pictures'], $blog, $_POST['pictures']);
+                    $this->uploadImages($_FILES['pictures'], $blog, $_POST);
                     
                     $_SESSION['success'][] = 'Blog créé';
                 }
@@ -260,8 +260,8 @@ class BlogController extends AbstractController
             $picture->setBlog($blog);
             $picture->setName($name);
             
-            if (isset($datas[$key]['header'])) {
-                $picture->setHeader($datas[$key]['header']);
+            if (isset($datas['pictures'][$key]['header'])) {
+                $picture->setHeader($datas['pictures'][$key]['header']);
             }
             
             (new SlugService($name, $this->pictureRepository, $picture))->updateSlug();

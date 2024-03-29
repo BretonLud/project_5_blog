@@ -51,13 +51,14 @@ class BlogController extends AbstractController
      */
     public function show(string $slug): Response
     {
-        $blog = $this->blogRepository->findBySlug($slug);
-        
-        if ($blog === null) {
-            throw new \Exception('Blog not found');
+        try {
+            $blog = $this->blogRepository->findBySlug($slug);
+        } catch (Exception $exception) {
+            $_SESSION['errors'][] = $exception->getMessage();
+            return new RedirectResponse('/blogs');
         }
         
-        $blog->setComments($this->commentRepository->findBy(['blog_id' => $blog->getId()], 'created_at DESC'));
+        $blog->setComments($this->commentRepository->findBy(['blog_id' => $blog->getId(), 'validated' => true], 'created_at DESC'));
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
@@ -84,8 +85,6 @@ class BlogController extends AbstractController
             } catch (NestedValidationException $exception) {
                 $validationErrors = $exception->getMessages();
                 $_SESSION['error'] = $validationErrors;
-                
-                
             }
             
             return new RedirectResponse("/blogs/show/$slug", ['blog' => $blog]);

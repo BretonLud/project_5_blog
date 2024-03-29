@@ -42,6 +42,7 @@ $router->get('/admin/blog/edit/:slug', 'Admin\Blog#edit')->with('slug', '[0-9\-a
 $router->get('/blogs', 'Blog#index');
 $router->get('/blogs/show/:slug', 'Blog#show')->with('slug', '[0-9\-a-z]+');
 $router->get('/admin/comment', 'Admin\Comment#index');
+$router->get('/blogs/show/:slug/comment/edit/:id', 'Comment#edit')->with('slug', '[0-9\-a-z]+')->with('id', '[0-9]+');
 
 
 $router->post('/login', 'Security#handleLoginSubmit');
@@ -58,6 +59,8 @@ $router->post('/admin/blog/delete/:slug', "Admin\Blog#delete")->with('slug', '[0
 $router->post('/blogs/show/:slug', "Blog#show")->with('slug', '[0-9\-a-z]+');
 $router->post('/admin/comment/validated/:id', 'Admin\Comment#validated')->with('id', '[0-9]+');
 $router->post('/admin/comment/delete/:id', 'Admin\Comment#delete')->with('id', '[0-9]+');
+$router->post('/blogs/show/:slug/comment/edit/:id', 'Comment#edit')->with('slug', '[0-9\-a-z]+')->with('id', '[0-9]+');
+$router->post('/blogs/show/:slug/comment/delete/:id', 'Comment#delete')->with('slug', '[0-9\-a-z]+')->with('id', '[0-9]+');
 
 
 try {

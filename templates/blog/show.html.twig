@@ -70,31 +70,40 @@
         </div>
         <div class="mb-3">
             <div class="mb-3">
-                <h3>Commentaires :</h3>
+                <h3 class="mb-3">Commentaires :</h3>
                 {% for comment in blog.comments %}
-                    {% set oneCommentValidated = false %}
-                    {% if comment.validated %}
-                        {% set oneCommentValidated = true %}
-                        {% if comment.user.id == app.user.id %}
+                    {% if comment.user.id == app.user.id %}
+                        <div class="mb-3">
                             <div>
-                                Créer le {{ comment.createdAt|date('d/m/y H:i') }}
-                                {{ comment.content }} <a href="">Éditer</a> <a href="">Supprimé</a>
-                                {% if comment.createdAt != comment.updatedAt %}
-                                    Mis à jour le à {{ comment.updatedAt|date('d/m/y H:i') }}
-                                {% endif %}
+                                <blockquote class="d-flex justify-content-between blockquote">
+                                    {{ comment.content }}
+                                    <div class="d-flex">
+                                        <a href="/blogs/show/{{ blog.slug }}/comment/edit/{{ comment.id }}">
+                                            <i class="bi bi-pencil-fill p-1"></i></a>
+                                        <form method="POST" action="/blogs/show/{{ blog.slug }}/comment/delete/{{ comment.id }}"
+                                              onsubmit="return confirm('Êtes vous de vouloir supprimer ce commentaire ?')">
+                                            <button type="submit" class="p-0 border-0 bg-transparent">
+                                                <i class="bi bi-trash-fill text-danger p-1"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </blockquote>
+                                <div class="d-flex justify-content-between">
+                                    <figcaption class="blockquote-footer">Créer le {{ comment.createdAt|date('d/m/y H:i') }}</figcaption>
+                                    {% if comment.createdAt != comment.updatedAt %}
+                                        <figcaption class="blockquote-footer">Mis à jour le à {{ comment.updatedAt|date('d/m/y H:i') }}</figcaption>
+                                    {% endif %}
+                                </div>
                             </div>
-                        {% else %}
-                            <div>
-                                Créer le {{ comment.createdAt|date('d/m/y H:i') }}
-                                {{ comment.content }}
-                                {% if comment.createdAt != comment.updatedAt %}
-                                    Mis à jour le à {{ comment.updatedAt|date('d/m/y H:i') }}
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    {% endif %}
-                    {% if not oneCommentValidated %}
-                        Pas de commentaire, soyez le premier à en donner un !
+                        </div>
+                    {% else %}
+                        <div>
+                            Créer le {{ comment.createdAt|date('d/m/y H:i') }}
+                            {{ comment.content }}
+                            {% if comment.createdAt != comment.updatedAt %}
+                                Mis à jour le à {{ comment.updatedAt|date('d/m/y H:i') }}
+                            {% endif %}
+                        </div>
                     {% endif %}
                 {% else %}
                     Pas de commentaire, soyez le premier à en donner un !
@@ -119,7 +128,10 @@
                         </div>
                     </form>
                 {% else %}
-                    
+                    <div>
+                        <h5>Pour pouvoir laisser un commentaire, merci de vous connecter !</h5>
+                        <a href="/login" class="btn btn-primary">Se connecter</a>
+                    </div>
                 {% endif %}
             </div>
 

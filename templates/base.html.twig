@@ -16,7 +16,7 @@
     {% block javascripts %}
     {% endblock %}
 </head>
-<body>
+<body class="vh-100">
 <header>
     <nav>
         <nav class="navbar navbar-expand-lg bg-white p-3 shadow ">
@@ -62,7 +62,7 @@
                                         </div>
                                     </a>
 
-                                    {% if app.user and app.user.role == "ADMIN" and app.unapprovedCommentCount is not empty %}
+                                    {% if app.user and app.user.role == "ADMIN" and app.unapprovedCommentCount != 0 %}
                                         <a href="/admin/comment" class="nav-link" title="Il y a {{ app.unapprovedCommentCount }} commentaire(s) à valider">
                                             <div class="notification-circle">
                                                 {{ app.unapprovedCommentCount }}
@@ -302,7 +302,7 @@
         </div>
     </div>
 {% endif %}
-<div class="container-lg d-flex flex-column flex-grow-1 pb-5">
+<div class="container-lg d-flex flex-column flex-grow-1 pb-5 h-75">
     {% for message in success %}
         <div class="flex justify-content-center align-items-center message container mt-3">
             <div class="alert alert-success">{{ message }}</div>

@@ -6,10 +6,17 @@ class Comment
 {
     private int $id;
     private User $user;
+    private Blog $blog;
     private \DateTime $created_at;
     private \DateTime $updated_at;
     private string $content;
     private bool $validated = false;
+    
+    public function __construct()
+    {
+        $this->created_at = new \DateTime('now');
+        $this->updated_at = new \DateTime('now');
+    }
     
     /**
      * @return int
@@ -27,7 +34,6 @@ class Comment
     {
         $this->id = $id;
     }
-    
     
     /**
      * @return User
@@ -112,5 +118,32 @@ class Comment
     public function setValidated(bool $validated): void
     {
         $this->validated = $validated;
+    }
+    
+    /**
+     * @throws \Exception
+     */
+    public static function initializeFromRow(array $row, User $user, Blog $blog): self
+    {
+        $comment = new self();
+        $comment->setUser($user);
+        $comment->setId($row['id']);
+        $comment->setContent($row['content']);
+        $comment->setBlog($blog);
+        $comment->setCreatedAt(new \DateTime($row['created_at']));
+        $comment->setUpdatedAt(new \DateTime($row['updated_at']));
+        $comment->setValidated($row['validated']);
+        
+        return $comment;
+    }
+    
+    public function getBlog(): Blog
+    {
+        return $this->blog;
+    }
+    
+    public function setBlog(Blog $blog): void
+    {
+        $this->blog = $blog;
     }
 }
