@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Édition de mon commentaire pour le blog {{ comment.blog.title }} {% endblock %}
+
+{% block body %}
+    <div class="container m-auto bg-body-tertiary">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col col-xl-10">
+                <div style="border-radius: 1rem;">
+                    <div class="d-flex align-items-center">
+                        <div class="card-body p-4 p-lg-5 text-black">
+                            <div class="p-3">
+                                <h2 class="text-center">{{ block('title') }}</h2>
+                            </div>
+                            <div>
+                                <div class="text-warning">
+                                    En modifiant votre commentaire, celui-ci sera à nouveau soumis à la modération.
+                                </div>
+                            </div>
+                            <form action="" method="post">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" placeholder="Commentaire" id="commentContent" name="commentContent" required
+                                              style="height: 100px">{{ comment.content }}</textarea>
+                                    <label for="commentContent">Votre commentaire:</label>
+                                    {% if error.content %}
+                                        <div class="invalid-feedback">
+                                            {{ error.content }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary">
+                                        Modifier mon commentaire
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

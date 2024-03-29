@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Gestion des commentaires' %}
+
+{% block body %}
+    <div class="container table-responsive p-4">
+        <div class="mb-4">
+            <h2 class="text-center">{{ block('title') }}</h2>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>
+                    Utilisateur
+                </th>
+                <th>
+                    Blog
+                </th>
+                <th>
+                    Commentaire
+                </th>
+                <th class="text-end">
+                    Options
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td>
+                        {{ comment.user }}
+                    </td>
+
+                    <td>
+                        {{ comment.blog.title }}
+                    </td>
+
+                    <td>
+                        {{ comment.content }}
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-end">
+                            {% if not comment.validated %}
+                                <form method="POST" action="/admin/comment/validated/{{ comment.id }}"
+                                      onsubmit="return confirm('Êtes vous de vouloir valider ce commentaire ?')">
+                                    <button type="submit" class="p-0 border-0 bg-transparent">
+                                        <i class="bi bi-check-square text-success p-1"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                            <form method="POST" action="/admin/comment/delete/{{ comment.id }}"
+                                  onsubmit="return confirm('Êtes vous de vouloir supprimer ce commentaire ?')">
+                                <button type="submit" class="p-0 border-0 bg-transparent">
+                                    <i class="bi bi-trash-fill text-danger p-1"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <th colspan="10">
+                        Pas de commentaires existants
+                    </th>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <th colspan="10">
+                    <div class="d-flex justify-content-between">
+                        <a href="/admin" class="btn btn-warning">
+                            <i class="bi bi-arrow-return-left"></i>
+                        </a>
+                        <a href="/admin/blog/create" class="btn btn-primary">Créer un blog</a>
+                    </div>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+{% endblock %}
