@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Les blogs' %}
+
+{% block body %}
+    <div class="container p-4">
+        <div class="mb-4">
+            <h2 class="text-center">{{ block('title') }}</h2>
+        </div>
+        <div class="mb-3 row row-cols-lg-3 row-cols-1 row-cols-md-2">
+            {% for blog in blogs %}
+                <div class="col mb-3">
+                    <div class="card">
+                        <div class="card-header bg-info-subtle">
+                            {{ blog.title }}
+                        </div>
+                        <div class="card-body">
+                            <div id="{{ blog.slug }}" class="carousel slide mb-3" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    {% set index = 0 %}
+                                    {% set hasHeader = false %}
+                                    {% for picture in blog.pictures %}
+                                        {% if picture.header %}
+                                            {% set hasHeader = true %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% for key, picture in blog.pictures %}
+                                        {% if (not hasHeader) or picture.header or blog.pictures|length == 1 %}
+                                            <div class="carousel-item {{ (key == 0) ? "active" }}">
+                                                <img class="d-block w-100" src="/pictures/{{ picture.name }}" height="250" alt="{{ key }} slide">
+                                            </div>
+                                            {% set index = index + 1 %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {% if index > 1 %}
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#{{ blog.slug }}" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon  bg-black" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#{{ blog.slug }}" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                {% endif %}
+                            </div>
+                            <div>
+                                {{ blog.summary }}
+                            </div>
+                        </div>
+                        <div class="card-footer bg-info-subtle d-flex justify-content-center">
+                            <a href="/blogs/show/{{ blog.slug }}" class="btn btn-outline-dark">
+                                Voir plus
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
