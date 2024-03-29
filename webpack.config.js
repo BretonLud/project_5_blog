@@ -15,6 +15,7 @@ Encore
     })
 
     .addEntry('app', './assets/app.js')
+    .addEntry('blog', './assets/blog.js')
 
     .cleanupOutputBeforeBuild()
 
