@@ -43,21 +43,23 @@ class BlogRepository
     /**
      * @throws Exception
      */
-    public function findBySlug($slug): ?Blog
+    public function findBySlug(string $slug, string $action = ''): ?Blog
     {
-        
         $database = $this->connection->getConnection();
         $statement = $database->prepare("SELECT * from blog WHERE slug = :slug");
         $statement->bindParam(':slug', $slug);
         $statement->execute();
+        $result = $statement->fetch();
         
-        $blog = null;
-        if ($row = $statement->fetch()) {
-            $blog = $this->setBlog($row, $database);
+        if (!$result and !$action) {
+            throw new Exception('Impossible de retrouver le blog');
         }
         
+        if (!$result) {
+            return null;
+        }
         
-        return $blog;
+        return $this->setBlog($result, $database);
     }
     
     /**
