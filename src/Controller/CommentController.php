@@ -36,7 +36,7 @@ class CommentController extends AbstractController
             return new RedirectResponse("/blogs/show/$slug");
         }
         
-        if ($comment->getUser() != $this->getUser() or $this->getUser()->getRole() != "ADMIN") {
+        if ($comment->getUser() != $this->getUser() and $this->getUser()->getRole() != "ADMIN") {
             $_SESSION['errors'][] = "Impossible de modifier un commentaire qui n'est pas le votre.";
             return new RedirectResponse("/blogs/show/$slug");
         }
@@ -78,7 +78,7 @@ class CommentController extends AbstractController
             return new RedirectResponse("/blogs/show/$slug");
         }
         
-        if ($comment->getUser() != $this->getUser() or $this->getUser()->getRole() != "ADMIN") {
+        if ($comment->getUser() != $this->getUser() and $this->getUser()->getRole() != "ADMIN") {
             $_SESSION['errors'][] = "Impossible de supprimer un commentaire qui n'est pas le votre.";
             return new RedirectResponse("/blogs/show/$slug");
         }
