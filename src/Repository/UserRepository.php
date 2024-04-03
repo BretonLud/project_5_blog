@@ -4,26 +4,29 @@ namespace App\Repository;
 
 use App\Database\Connection;
 use App\Entity\User;
+use PDO;
 
 class UserRepository
 {
-    public function __construct(private Connection $connection)
+    private Connection $connection;
+    private PDO $database;
+    
+    public function __construct()
     {
+        $this->connection = new Connection();
+        $this->database = $this->connection->getConnection();
     }
     
     /**
      * @param string $slug
      * @return User|null
      */
-    public function findBySlug(string $slug): ?User
+    public function findBySlug(string $slug, string $action = ''): ?User
     {
-        $database = $this->connection->getConnection();
-        
-        $statement = $database->prepare("SELECT id, slug, firstname, lastname, email, role, validated from user where slug = :slug ");
+        $statement = $this->database->prepare("SELECT * from user where slug = :slug ");
         $statement->bindParam(':slug', $slug);
         $statement->execute();
         $row = $statement->fetch();
-        
         
         if ($row) {
             $user = $this->setUser($row);
@@ -39,8 +42,7 @@ class UserRepository
      */
     public function findAll(): array
     {
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare("SELECT id, slug, firstname, lastname, email, role, validated from user");
+        $statement = $this->database->prepare("SELECT id, slug, firstname, lastname, email, role, validated from user");
         $statement->execute();
         
         $users = [];
@@ -59,8 +61,7 @@ class UserRepository
      */
     public function findByEmail(string $email): ?User
     {
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare('SELECT * from user where user.email = :email');
+        $statement = $this->database->prepare('SELECT * from user where user.email = :email');
         $statement->bindParam(':email', $email);
         $statement->execute();
         
@@ -90,8 +91,7 @@ class UserRepository
         $slug = $user->getSlug();
         $validated = $user->getValidated() ? 1 : 0;
         
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare('INSERT INTO user (firstname, lastname, email, password, role, slug, validated)
+        $statement = $this->database->prepare('INSERT INTO user (firstname, lastname, email, password, role, slug, validated)
                             VALUES (:firstname, :lastname, :email, :password, :role, :slug, :validated)');
         $statement->bindParam(':firstname', $firstname);
         $statement->bindParam(':lastname', $lastname);
@@ -149,8 +149,7 @@ class UserRepository
         $slug = $user->getSlug();
         $validated = $user->getValidated() ? 1 : 0;
         
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare('UPDATE user SET firstname = :firstname, lastname = :lastname, email = :email, password = :password, role = :role, slug = :slug, validated = :validated WHERE id = :id');
+        $statement = $this->database->prepare('UPDATE user SET firstname = :firstname, lastname = :lastname, email = :email, password = :password, role = :role, slug = :slug, validated = :validated WHERE id = :id');
         $statement->bindParam(':id', $id);
         $statement->bindParam(':firstname', $firstname);
         $statement->bindParam(':lastname', $lastname);
@@ -178,8 +177,7 @@ class UserRepository
         $email = $user->getEmail();
         $slug = $user->getSlug();
         
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare('UPDATE user SET firstname = :firstname, lastname = :lastname, email = :email, slug = :slug WHERE id = :id');
+        $statement = $this->database->prepare('UPDATE user SET firstname = :firstname, lastname = :lastname, email = :email, slug = :slug WHERE id = :id');
         $statement->bindParam(':id', $id);
         $statement->bindParam(':firstname', $firstname);
         $statement->bindParam(':lastname', $lastname);
@@ -200,8 +198,8 @@ class UserRepository
     {
         
         $id = $user->getId();
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare('UPDATE user SET password = :password WHERE id = :id');
+        
+        $statement = $this->database->prepare('UPDATE user SET password = :password WHERE id = :id');
         $statement->bindParam(':id', $id);
         $statement->bindParam(':password', $password);
         
@@ -225,8 +223,7 @@ class UserRepository
         $slug = $user->getSlug();
         $role = $user->getRole();
         
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare('UPDATE user SET role = :role, firstname = :firstname, lastname = :lastname, email = :email, slug = :slug WHERE id = :id');
+        $statement = $this->database->prepare('UPDATE user SET role = :role, firstname = :firstname, lastname = :lastname, email = :email, slug = :slug WHERE id = :id');
         $statement->bindParam(':id', $id);
         $statement->bindParam(':firstname', $firstname);
         $statement->bindParam(':lastname', $lastname);
@@ -248,8 +245,8 @@ class UserRepository
     {
         
         $id = $user->getId();
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare('DELETE FROM user WHERE id = :id');
+        
+        $statement = $this->database->prepare('DELETE FROM user WHERE id = :id');
         $statement->bindParam(':id', $id);
         
         try {
@@ -259,5 +256,22 @@ class UserRepository
             return false;
         }
         return true;
+    }
+    
+    public function find(mixed $user_id): ?User
+    {
+        $statement = $this->database->prepare('SELECT * from user where user.id = :id');
+        $statement->bindParam(':id', $user_id);
+        $statement->execute();
+        
+        $row = $statement->fetch();
+        
+        if ($row) {
+            $user = $this->setUser($row);
+        } else {
+            $user = null;
+        }
+        
+        return $user;
     }
 }
