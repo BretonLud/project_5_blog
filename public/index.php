@@ -43,6 +43,8 @@ $router->get('/blogs', 'Blog#index');
 $router->get('/blogs/show/:slug', 'Blog#show')->with('slug', '[0-9\-a-z]+');
 $router->get('/admin/comment', 'Admin\Comment#index');
 $router->get('/blogs/show/:slug/comment/edit/:id', 'Comment#edit')->with('slug', '[0-9\-a-z]+')->with('id', '[0-9]+');
+$router->get('/contact', 'Contact#index');
+$router->get('/profil/comment', 'User\Comment#index');
 
 
 $router->post('/login', 'Security#handleLoginSubmit');
@@ -61,6 +63,7 @@ $router->post('/admin/comment/validated/:id', 'Admin\Comment#validated')->with('
 $router->post('/admin/comment/delete/:id', 'Admin\Comment#delete')->with('id', '[0-9]+');
 $router->post('/blogs/show/:slug/comment/edit/:id', 'Comment#edit')->with('slug', '[0-9\-a-z]+')->with('id', '[0-9]+');
 $router->post('/blogs/show/:slug/comment/delete/:id', 'Comment#delete')->with('slug', '[0-9\-a-z]+')->with('id', '[0-9]+');
+$router->post('/contact', 'Contact#index');
 
 
 try {
