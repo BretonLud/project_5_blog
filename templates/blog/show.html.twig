@@ -72,11 +72,12 @@
             <div class="mb-3">
                 <h3 class="mb-3">Commentaires :</h3>
                 {% for comment in blog.comments %}
-                    {% if comment.user.id == app.user.id %}
-                        <div class="mb-3">
-                            <div>
-                                <blockquote class="d-flex justify-content-between blockquote">
-                                    {{ comment.content }}
+
+                    <div class="mb-3">
+                        <div>
+                            <blockquote class="d-flex justify-content-between blockquote">
+                                {{ comment.content }}
+                                {% if comment.user.id == app.user.id or app.user.role == "ADMIN" %}
                                     <div class="d-flex">
                                         <a href="/blogs/show/{{ blog.slug }}/comment/edit/{{ comment.id }}">
                                             <i class="bi bi-pencil-fill p-1"></i></a>
@@ -87,24 +88,17 @@
                                             </button>
                                         </form>
                                     </div>
-                                </blockquote>
-                                <div class="d-flex justify-content-between">
-                                    <figcaption class="blockquote-footer">Créer le {{ comment.createdAt|date('d/m/y H:i') }}</figcaption>
-                                    {% if comment.createdAt != comment.updatedAt %}
-                                        <figcaption class="blockquote-footer">Mis à jour le à {{ comment.updatedAt|date('d/m/y H:i') }}</figcaption>
-                                    {% endif %}
-                                </div>
+                                {% endif %}
+                            </blockquote>
+                            <div class="d-flex justify-content-between">
+                                <figcaption class="blockquote-footer">Créer le {{ comment.createdAt|date('d/m/y H:i') }}</figcaption>
+                                {% if comment.createdAt != comment.updatedAt %}
+                                    <figcaption class="blockquote-footer">Mis à jour le à {{ comment.updatedAt|date('d/m/y H:i') }}</figcaption>
+                                {% endif %}
+                                <figcaption class="blockquote-footer">{{ comment.user }}</figcaption>
                             </div>
                         </div>
-                    {% else %}
-                        <div>
-                            Créer le {{ comment.createdAt|date('d/m/y H:i') }}
-                            {{ comment.content }}
-                            {% if comment.createdAt != comment.updatedAt %}
-                                Mis à jour le à {{ comment.updatedAt|date('d/m/y H:i') }}
-                            {% endif %}
-                        </div>
-                    {% endif %}
+                    </div>
                 {% else %}
                     Pas de commentaire, soyez le premier à en donner un !
                 {% endfor %}
