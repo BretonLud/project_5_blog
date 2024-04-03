@@ -14,7 +14,7 @@ use App\Service\TokenService;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validatable;
 use Respect\Validation\Validator as v;
-use Swift_DependencyException;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -39,7 +39,6 @@ class RegisterController extends AbstractController
     
     /**
      * @return Response|RedirectResponse
-     * @throws Swift_DependencyException
      */
     public function handleRegisterSubmit(): Response|RedirectResponse
     {
@@ -106,7 +105,9 @@ class RegisterController extends AbstractController
      * @param $POST
      * @param UserRepository $userRepository
      * @return bool
-     * @throws Swift_DependencyException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     private function create($POST, UserRepository $userRepository): bool
     {
@@ -144,6 +145,7 @@ class RegisterController extends AbstractController
     /**
      * @param string $slug
      * @return RedirectResponse
+     * @throws TransportExceptionInterface
      */
     public function resendVerifyEmail(string $slug): RedirectResponse
     {
@@ -172,7 +174,10 @@ class RegisterController extends AbstractController
     /**
      * @param User $user
      * @return void
-     * @throws Swift_DependencyException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws TransportExceptionInterface
      */
     private function sendVerifyEmail(User $user): void
     {
@@ -185,7 +190,7 @@ class RegisterController extends AbstractController
         $verificationLink = "http://localhost/verify-email?token=" . $token;
         
         // Send email
-        $mailerService = new MailerService('localhost', 1025, 'email/verify.html.twig', [
+        $mailerService = new MailerService('email/verify.html.twig', [
             'link' => $verificationLink
         ]);
         
