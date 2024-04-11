@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Abstract;
+namespace App\ClassAbstract;
 
 use App\Entity\User;
 use App\Http\RedirectResponse;
