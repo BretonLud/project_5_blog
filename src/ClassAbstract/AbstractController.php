@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Abstract;
+namespace App\ClassAbstract;
 
 use App\Database\Connection;
 use App\Entity\User;

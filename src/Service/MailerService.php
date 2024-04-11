@@ -2,37 +2,53 @@
 
 namespace App\Service;
 
-use Swift_DependencyException;
-use Swift_Mailer;
-use Swift_SmtpTransport;
+use Exception;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class MailerService
 {
-    private Swift_Mailer $mailer;
+    private MailerInterface $mailer;
     
-    public function __construct(string $host, int $port, private string $template, private array $options)
+    private string $dsn;
+    
+    public function __construct(private readonly string $template, private readonly array $options = [])
     {
-        $transport = new Swift_SmtpTransport($host, $port);
-        $this->mailer = new Swift_Mailer($transport);
+        $this->dsn = $_ENV['MAILER_DSN'];
+        $transport = Transport::fromDsn($this->dsn);
+        $this->mailer = new Mailer($transport);
     }
     
     /**
-     * @param string $email
-     * @param $twig
-     * @param string $subject
-     * @return void
-     * @throws Swift_DependencyException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws TransportExceptionInterface
+     * @throws Exception
      */
-    public function sendEmail(string $email, $twig, string $subject): void
+    public function sendEmail(string $email, Environment $twig, string $subject, string $replyEmail = ""): void
     {
-        $message = (new \Swift_Message($subject))
-            ->setFrom('no-reply@project5.fr')
-            ->setTo($email)
-            ->setBody($twig->render($this->template,
-                $this->options),
-                'text/html'
-            );
+        $email = (new Email())
+            ->from('no-reply@ludovic-breton.fr')
+            ->to($email)
+            ->subject($subject)
+            ->html($twig->render($this->template, $this->options));
         
-        $this->mailer->send($message);
+        if (is_string($replyEmail) and preg_match('/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/', $replyEmail)) {
+            $email->replyTo($replyEmail);
+        }
+        
+        if (is_string($replyEmail) and !preg_match('/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/', $replyEmail)) {
+            throw new Exception('Email non valide.');
+        }
+        
+        $this->mailer->send($email);
     }
 }

@@ -12,6 +12,7 @@ use App\Service\MailerService;
 use App\Service\TokenService;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator as v;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -36,6 +37,7 @@ class ResetPasswordController extends AbstractController
     
     /**
      * @return RedirectResponse
+     * @throws TransportExceptionInterface
      */
     public function handleResetPasswordSubmit(): RedirectResponse
     {
@@ -68,6 +70,7 @@ class ResetPasswordController extends AbstractController
     /**
      * @param User $user
      * @return RedirectResponse
+     * @throws TransportExceptionInterface
      */
     private function sendResetPassword(User $user): RedirectResponse
     {
@@ -81,7 +84,7 @@ class ResetPasswordController extends AbstractController
         $verificationLink = "http://localhost/reset-password/verify-token/?token=" . $token;
         
         // Send email
-        $mailerService = new MailerService('localhost', 1025, 'email/reset-password.html.twig', [
+        $mailerService = new MailerService('email/reset-password.html.twig', [
             'link' => $verificationLink
         ]);
         
@@ -141,7 +144,7 @@ class ResetPasswordController extends AbstractController
             return new RedirectResponse('/reset-password/index');
         }
         
-        $user = (new UserRepository(new Connection()))->findByEmail($decodedToken->email);
+        $user = (new UserRepository())->findByEmail($decodedToken->email);
         
         if ($user instanceof User) {
             return new RedirectResponse('/reset-password');
