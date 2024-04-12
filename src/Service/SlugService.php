@@ -31,10 +31,10 @@ class SlugService
     }
     
     /**
-     * @param $entityId
+     * @param int|null $entityId
      * @return void
      */
-    public function updateSlug($entityId = null): void
+    public function updateSlug(int $entityId = null): void
     {
         $existing = ($entityId) ? $this->repository->findBySlug($this->slug) : $this->repository->findBySlug($this->slug, 'create');
         
