@@ -2,7 +2,7 @@
 
 namespace App\Controller\User;
 
-use App\Abstract\AbstractController;
+use App\ClassAbstract\AbstractController;
 use App\Http\RedirectResponse;
 use App\Http\Response;
 use App\Repository\CommentRepository;

@@ -2,8 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Abstract\AbstractController;
-use App\Database\Connection;
+use App\ClassAbstract\AbstractController;
 use App\Entity\Blog;
 use App\Entity\Picture;
 use App\Http\RedirectResponse;
@@ -177,6 +176,13 @@ class BlogController extends AbstractController
                     $blog->setTitle($_POST['title']);
                     $blog->setContent($_POST['content']);
                     $blog->setUpdatedAt(new \DateTime());
+                    if (strlen($_POST['content']) > 252) {
+                        $summary = substr($_POST['content'], 0, 252) . '...';
+                    } else {
+                        $summary = $_POST['content'];
+                    }
+                    
+                    $blog->setSummary($summary);
                     (new SlugService($blog->getTitle(), $this->blogRepository, $blog))->updateSlug($blog->getId());
                     $this->blogRepository->update($blog);
                     $_SESSION['success'][] = 'Blog modifié';
