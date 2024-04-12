@@ -1,0 +1,102 @@
+@import "_variables.scss";
+@import "_mixins.scss";
+@import "~bootstrap";
+@import "bootstrap-icons";
+@import "social/social.scss";
+@import "home/home.scss";
+@import "home/about.scss";
+@import "home/skill.scss";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+ul, a {
+    text-decoration: none;
+}
+
+.notification-circle {
+    width: 40px;
+    height: 40px;
+    background-color: #f03e3e;
+    border-radius: 50%;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+section {
+    padding: 45px 0;
+}
+
+footer {
+    background-color: #100f2e;
+    text-align: center;
+
+    a {
+        H2 {
+            font-weight: bolder;
+            border: 1px solid white;
+            padding: 0 3px;
+            color: white;
+            font-size: 35PX;
+            width: 54.66PX;
+            display: inline-block;
+            margin-bottom: 25PX;
+
+            span {
+                transform: rotate(180deg);
+                display: inline-flex;
+                line-height: initial;
+                -webkit-padding-before: 1px;
+            }
+        }
+    }
+
+    .footer-content {
+        padding: 70px 0 20px;
+
+        p {
+            font-size: 12px;
+            color: #fff;
+            max-width: 30%;
+            margin: auto;
+            padding-bottom: 20px;
+        }
+
+        .social-media-footer {
+            a {
+                color: #fff;
+                background-color: $mainColor;
+                border-radius: 7px;
+                width: 25px;
+                height: 25px;
+                line-height: 25px;
+                display: inline-block;
+                margin-right: 13px;
+                font-size: 13px;
+                margin-bottom: 40px;
+                @include animate(all, 400ms, ease-in-out);
+
+                &:hover {
+                    color: $mainColor;
+                    background-color: #fff;
+                }
+
+            }
+
+            a:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+}
+

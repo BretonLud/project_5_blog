@@ -6,18 +6,21 @@ use App\Database\Connection;
 use App\Entity\Blog;
 use App\Entity\Picture;
 use Exception;
+use PDO;
 
 class BlogRepository
 {
     private Connection $connection;
     private UserRepository $userRepository;
     private PictureRepository $pictureRepository;
+    private PDO $database;
     
     public function __construct()
     {
         $this->connection = new Connection();
         $this->userRepository = new UserRepository();
         $this->pictureRepository = new PictureRepository();
+        $this->database = $this->connection->getConnection();
     }
     
     /**
@@ -25,14 +28,14 @@ class BlogRepository
      */
     public function findAll(): array
     {
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare("SELECT * from blog order by created_at DESC ");
+       
+        $statement = $this->database->prepare("SELECT * from blog order by created_at DESC ");
         $statement->execute();
         
         $blogs = [];
         
-        while (($row = $statement->fetch(\PDO::FETCH_ASSOC))) {
-            $blog = $this->setBlog($row, $database);
+        while (($row = $statement->fetch(PDO::FETCH_ASSOC))) {
+            $blog = $this->setBlog($row,);
             
             $blogs[] = $blog;
         }
@@ -45,8 +48,7 @@ class BlogRepository
      */
     public function findBySlug(string $slug, string $action = ''): ?Blog
     {
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare("SELECT * from blog WHERE slug = :slug");
+        $statement = $this->database->prepare("SELECT * from blog WHERE slug = :slug");
         $statement->bindParam(':slug', $slug);
         $statement->execute();
         $result = $statement->fetch();
@@ -59,13 +61,13 @@ class BlogRepository
             return null;
         }
         
-        return $this->setBlog($result, $database);
+        return $this->setBlog($result);
     }
     
     /**
      * @throws Exception
      */
-    private function setBlog(mixed $row, $database): Blog
+    private function setBlog(mixed $row): Blog
     {
         
         $user = $this->userRepository->find($row['user_id']);
@@ -91,8 +93,8 @@ class BlogRepository
         $updatedAt = $blog->getUpdatedAt()->format('Y-m-d H:i:s');
         $summary = $blog->getSummary();
         
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare("INSERT INTO blog (created_at, updated_at, slug, title, content, user_id, summary)
+       
+        $statement = $this->database->prepare("INSERT INTO blog (created_at, updated_at, slug, title, content, user_id, summary)
             VALUES (:created_at, :updated_at, :slug, :title, :content, :user, :summary)");
         $statement->bindParam(':created_at', $createdAt);
         $statement->bindParam(':updated_at', $updatedAt);
@@ -104,7 +106,7 @@ class BlogRepository
         
         try {
             $statement->execute();
-            $blog->setId($database->lastInsertId());
+            $blog->setId($this->database->lastInsertId());
             return $blog;
         } catch (Exception $exception) {
             $_SESSION['errors'][] = $exception->getMessage();
@@ -121,13 +123,14 @@ class BlogRepository
         $content = $blog->getContent();
         $updatedAt = $blog->getUpdatedAt()->format('Y-m-d H:i:s');
         $id = $blog->getId();
+        $summary = $blog->getSummary();
         
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare("UPDATE blog SET updated_at = :updated_at, slug = :slug, title = :title, content = :content WHERE id = :id");
+        $statement = $this->database->prepare("UPDATE blog SET updated_at = :updated_at, slug = :slug, title = :title, content = :content, summary = :summary WHERE id = :id");
         $statement->bindParam(':updated_at', $updatedAt);
         $statement->bindParam(':slug', $slug);
         $statement->bindParam(':title', $title);
         $statement->bindParam(':content', $content);
+        $statement->bindParam(':summary', $summary);
         $statement->bindParam(':id', $id);
         
         try {
@@ -144,8 +147,7 @@ class BlogRepository
     public function delete(Blog $blog): bool
     {
         $id = $blog->getId();
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare('DELETE FROM blog WHERE id = :id');
+        $statement = $this->database->prepare('DELETE FROM blog WHERE id = :id');
         $statement->bindParam(':id', $id);
         
         try {
@@ -156,6 +158,26 @@ class BlogRepository
         }
         return true;
     }
+    
+    /**
+     * @throws Exception
+     */
+    public function findBy(array $array, string $order = "", int $limit = 0): false|array
+    {
+        
+        $stmt = $this->prepareStmt($array, $order, $limit);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $blogs = [];
+        foreach ($results as $result) {
+            $blog = $this->setBlog($result);
+            $blogs[] = $blog;
+        }
+        
+        return $blogs;
+    }
+    
     
     /**
      * @throws Exception
@@ -177,14 +199,13 @@ class BlogRepository
      */
     public function find(mixed $blog_id): ?Blog
     {
-        $database = $this->connection->getConnection();
-        $statement = $database->prepare("SELECT * from blog WHERE id = :id");
+        $statement = $this->database->prepare("SELECT * from blog WHERE id = :id");
         $statement->bindParam(':id', $blog_id);
         $statement->execute();
         
         $blog = null;
         if ($row = $statement->fetch()) {
-            $blog = $this->setBlog($row, $database);
+            $blog = $this->setBlog($row);
         }
         
         return $blog;
@@ -198,4 +219,29 @@ class BlogRepository
         return $this->pictureRepository->findBy(['blog_id' => $blogId]);
     }
     
+    private function prepareStmt(array $array, string $order, int $limit): false|\PDOStatement
+    {
+        $query = "SELECT * FROM blog WHERE ";
+        $conditions = [];
+        foreach ($array as $key => $value) {
+            $conditions[] = "$key = :$key";
+        }
+        $query .= implode(" AND ", $conditions);
+        
+        if ($order) {
+            $query .= " ORDER BY $order";
+        }
+        
+        if ($limit)
+        {
+            $query .= " LIMIT $limit";
+        }
+        
+        $stmt = $this->database->prepare($query);
+        
+        foreach ($array as $key => $value) {
+            $stmt->bindValue(":$key", $value);
+        }
+        return $stmt;
+    }
 }

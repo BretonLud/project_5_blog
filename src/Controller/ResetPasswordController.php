@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Abstract\AbstractController;
+use App\ClassAbstract\AbstractController;
 use App\Database\Connection;
 use App\Entity\User;
 use App\Http\RedirectResponse;

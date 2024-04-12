@@ -3,5 +3,27 @@
 {% block title %} Accueil {% endblock %}
 
 {% block body %}
-    <h1>Bonjour, voici la page d'accueil</h1>
+    <section id="home" class="home">
+        <div class="bg-image">  <!-- you can edit the image on the main.scss file just search ( bg-image ) --></div>
+        <div class="container">
+            <div class="title">
+                <span>Bonjour, je suis</span>
+                <h1>Ludovic Breton</h1>
+                <h5 class="type"></h5>  <!-- You Can Edit the title on the custom.js File -->
+                <p>Développeur web </p>
+                <div class="btn-home">
+                    <a href="files/cv/Breton_Ludovic_dev.pdf" class="main-btn mb-3 mb-md-0" download="Cv_Breton_Ludovic">Télécharger le CV</a>
+                    <a href="/contact" class="main-btn-hm">Contactez Moi</a>
+                </div>
+            </div>
+            <div class="identity">
+                <video loop="loop" autoplay>
+                    <source src="/build/images/software.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </section>
+    {{ include("/home/_about.html.twig") }}
+    {{ include("/home/_skills.html.twig") }}
+    {{ include("/home/_blog.html.twig") }}.
 {% endblock %}
