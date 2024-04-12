@@ -7,7 +7,7 @@ class Response
     protected string $content;
     private array $headers;
     
-    public function __construct($content, $headers = [])
+    public function __construct(string $content,array $headers = [])
     {
         $this->setContent($content);
         $this->headers = $headers;
