@@ -108,7 +108,7 @@
         </div>
     </div>
 {% endif %}
-<div class="d-flex flex-column flex-grow-1 pb-5 h-75">
+<div class="d-flex flex-column flex-grow-1 h-75 bg-main-color">
     {% for message in success %}
         <div class="flex justify-content-center align-items-center message container mt-3">
             <div class="alert alert-success">{{ message }}</div>
@@ -122,19 +122,22 @@
     {% endfor %}
     {% block body %}{% endblock %}
 </div>
-<footer class="text-center">
-    <div class="footer-content">
-        <div class="mb-3">
-            <a href="/" title="accueil">
-                <img src="/build/images/logo.png" height="90px"
-                     alt="logo" class="bg-white rounded-5">
-            </a>
+<footer class="text-center p-2">
+    <div class="footer-content ">
+        <div class="d-flex flex-lg-row-reverse justify-content-around align-items-center flex-column mb-2">
+            <div class="mb-3">
+                <a href="/" title="accueil">
+                    <img src="/build/images/logo.png" height="90px"
+                         alt="logo" class="bg-white rounded-5">
+                </a>
+            </div>
+
+            <div class="social-media-footer">
+                <a href="https://github.com/BretonLud" title="github"><i class="bi bi-github"></i></a>
+                <a href="https://www.linkedin.com/in/ludovic-breton/" title="linkedin"><i class="bi bi-linkedin"></i></a>
+            </div>
         </div>
 
-        <div class="social-media-footer">
-            <a href="https://github.com/BretonLud" title="github"><i class="bi bi-github"></i></a>
-            <a href="https://www.linkedin.com/in/ludovic-breton/" title="linkedin"><i class="bi bi-linkedin"></i></a>
-        </div>
         <div class="copyright">
             <p>Tous droits réservés</p>
         </div>
