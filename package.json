@@ -13,7 +13,8 @@
     "raw-loader": "^4.0.2",
     "regenerator-runtime": "^0.14.1",
     "style-loader": "^3.3.4",
-    "terser-webpack-plugin": "^5.3.10"
+    "terser-webpack-plugin": "^5.3.10",
+    "typed.js": "^2.1.0"
   },
   "devDependencies": {
     "@symfony/webpack-encore": "^4.6.1",

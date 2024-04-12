@@ -10,7 +10,9 @@
                 <span>Bonjour, je suis</span>
                 <h1>Ludovic Breton</h1>
                 <h5 class="type"></h5>  <!-- You Can Edit the title on the custom.js File -->
-                <p>Développeur web </p>
+                <p>
+                    Développeur web junior, spécialisé en PHP/Symfony, passionnément engagé dans la création de solutions web innovantes et performantes.
+                </p>
                 <div class="btn-home">
                     <a href="files/cv/Breton_Ludovic_dev.pdf" class="main-btn mb-3 mb-md-0" download="Cv_Breton_Ludovic">Télécharger le CV</a>
                     <a href="/contact" class="main-btn-hm">Contactez Moi</a>
@@ -26,4 +28,7 @@
     {{ include("/home/_about.html.twig") }}
     {{ include("/home/_skills.html.twig") }}
     {{ include("/home/_blog.html.twig") }}
+{% endblock %}
+{% block javascripts %}
+    <script src="/build/typed.js" defer></script>
 {% endblock %}

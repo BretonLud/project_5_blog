@@ -16,6 +16,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('blog', './assets/blog.js')
     .addEntry('contact', './assets/contact.js')
+    .addEntry('typed', './assets/typed.js')
 
     .enableBuildNotifications()
     .configureBabel((config) => {
