@@ -1,0 +1,67 @@
+.skills {
+  background-color: #f1f4fb;
+  @media screen and (max-width: 960px) {
+    padding: 90px 0 45px;
+  }
+
+  .skills-info {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+
+    .progress-text {
+      color: $textColor;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .progress {
+      background-color: #cdcdcd;
+      border-radius: 0;
+      overflow: visible;
+      position: relative;
+      height: 10px;
+      margin-bottom: 28px;
+      @media screen and (max-width: 960px) {
+        margin-bottom: 38px;
+      }
+
+      span {
+        position: absolute;
+        top: -30px;
+        right: 0;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .progress-bar {
+        float: left;
+        width: 0;
+        height: 100%;
+        line-height: 20px;
+        text-align: center;
+        position: relative;
+        @include animate(all, 1.5s, ease-in-out);
+        opacity: 0;
+        background-color: $mainColor;
+
+        &:before {
+          content: attr(data-present);
+          position: absolute;
+          right: 0;
+          top: -24px;
+          color: inherit;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 960px) {
+    .skills-content{
+      .row > div:not(:first-child){
+        margin-top: 3rem;
+      }
+    }
+  }
+}
