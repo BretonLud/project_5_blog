@@ -9,22 +9,20 @@ class Router
 {
     private array $routes;
     private string $url;
-    private array $namedRoutes;
     
-    public function __construct($url)
+    public function __construct(string $url)
     {
         $this->url = $url;
     }
     
-    
-    public function get($path, $callable, $name = null): Route
+    public function get(string $path,mixed $callable): Route
     {
-        return $this->add($path, $callable, $name, 'GET');
+        return $this->add($path, $callable,  'GET');
     }
     
-    public function post($path, $callable, $name = null): Route
+    public function post(string $path,mixed $callable): Route
     {
-        return $this->add($path, $callable, $name, 'POST');
+        return $this->add($path, $callable, 'POST');
     }
     
     /**
@@ -52,31 +50,11 @@ class Router
         throw new RouterException('No matching routes', 404);
     }
     
-    /**
-     * @throws RouterException
-     */
-    public function url($name, $params = [])
-    {
-        if (!isset($this->namedRoutes[$name])) {
-            throw new RouterException('No route found with name: ' . $name);
-        }
-        
-        return $this->namedRoutes[$name]->getUrl[$params];
-    }
-    
-    private function add($path, $callable, $name, $method): Route
+    private function add(string $path,mixed $callable,string $method): Route
     {
         $route = new Route($path, $callable);
         
         $this->routes[$method][] = $route;
-        
-        if (is_string($callable) && $name === null) {
-            $name = $callable;
-        }
-        
-        if ($name) {
-            $this->namedRoutes[$name] = $route;
-        }
         
         return $route;
     }
