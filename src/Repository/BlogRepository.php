@@ -162,7 +162,7 @@ class BlogRepository
     /**
      * @throws Exception
      */
-    public function findBy(array $array, string $order = "", int $limit = 0): false|array
+    public function findBy(array $array, string $order = "", int $limit = 0): bool|array
     {
         
         $stmt = $this->prepareStmt($array, $order, $limit);
@@ -176,22 +176,6 @@ class BlogRepository
         }
         
         return $blogs;
-    }
-    
-    
-    /**
-     * @throws Exception
-     */
-    private function setPicture(mixed $row): Picture
-    {
-        $picture = new Picture();
-        $picture->setId($row['id']);
-        $picture->setCreatedAt(new \DateTime($row['created_at']));
-        $picture->setName($row['name']);
-        $picture->setHeader($row['header']);
-        $picture->setSlug($row['slug']);
-        
-        return $picture;
     }
     
     /**
