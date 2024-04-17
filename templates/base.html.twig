@@ -101,7 +101,6 @@
     </nav>
 </header>
 {% if app.user is not empty and app.user.validated == false %}
-
     <div class="flex justify-content-center align-items-center message container mt-3">
         <div class="alert alert-danger">Votre compte n'est pas validé, pour recevoir un nouveau mail de validation, merci de cliquer: <a
                     href="/resend-verify-email/{{ user.slug }}" class="fw-bold">ICI</a>
