@@ -53,7 +53,7 @@ class BlogRepository
         $statement->execute();
         $result = $statement->fetch();
         
-        if (!$result and !$action) {
+        if (!$result && !$action) {
             throw new Exception('Impossible de retrouver le blog');
         }
         
