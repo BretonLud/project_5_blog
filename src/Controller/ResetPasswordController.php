@@ -110,7 +110,6 @@ class ResetPasswordController extends AbstractController
     public function confirmSend(): Response|RedirectResponse
     {
         if ($this->getUser()) {
-            die('ok');
             return new RedirectResponse('/');
         }
         
@@ -120,10 +119,7 @@ class ResetPasswordController extends AbstractController
     }
     
     /**
-     * @return Response|RedirectResponse
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
+     * @return RedirectResponse
      */
     public function verifyResetPasswordToken(): RedirectResponse
     {
@@ -198,10 +194,10 @@ class ResetPasswordController extends AbstractController
     }
     
     /**
-     * @param $post
+     * @param array $post
      * @return RedirectResponse
      */
-    private function updatePassword($post): RedirectResponse
+    private function updatePassword(array $post): RedirectResponse
     {
         $password = $post['password'];
         
