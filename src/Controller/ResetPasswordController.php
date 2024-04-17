@@ -49,7 +49,6 @@ class ResetPasswordController extends AbstractController
         try {
             $validator->assert($_POST);
             
-            
             $user = (new UserRepository(new Connection()))->findByEmail($_POST['email']);
             
             if ($user instanceof User) {
@@ -74,7 +73,7 @@ class ResetPasswordController extends AbstractController
      */
     private function sendResetPassword(User $user): RedirectResponse
     {
-        
+       
         // Generate token
         $tokenService = new TokenService();
         $tokenService->setExpire(600);
@@ -87,17 +86,17 @@ class ResetPasswordController extends AbstractController
         $mailerService = new MailerService('email/reset-password.html.twig', [
             'link' => $verificationLink
         ]);
-        
+      
         try {
             $mailerService->sendEmail($user->getEmail(), $this->twig, 'Reset password');
             $_SESSION['success'][] = 'Email envoyé';
-            
+      
             return new RedirectResponse('/reset-password/confirm-send');
         } catch (\Exception $exception) {
             $error = $exception->getMessage();
             
             $_SESSION['errors'][] = $error;
-            
+           
             return new RedirectResponse('/reset-password');
         }
         
@@ -111,6 +110,7 @@ class ResetPasswordController extends AbstractController
     public function confirmSend(): Response|RedirectResponse
     {
         if ($this->getUser()) {
+            die('ok');
             return new RedirectResponse('/');
         }
         
