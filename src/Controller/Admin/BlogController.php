@@ -314,12 +314,12 @@ class BlogController extends AbstractController
             $this->pictureRepository->updateHeader($picture);
         }
         
-        if ($picture->getHeader() and !isset($_POST[self::PICTURES_KEY][$index]['header'])) {
+        if ($picture->getHeader() && !isset($_POST[self::PICTURES_KEY][$index]['header'])) {
             $picture->setHeader(false);
             $this->pictureRepository->updateHeader($picture);
         }
         
-        if ($picturesData[$index] === $picture->getName() or !$this->validatePictures($_FILES) or empty($picturesData[$index])) {
+        if ($picturesData[$index] === $picture->getName() || !$this->validatePictures($_FILES) || empty($picturesData[$index])) {
             return;
         }
         

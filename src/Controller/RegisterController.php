@@ -14,6 +14,7 @@ use App\Service\TokenService;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validatable;
 use Respect\Validation\Validator as v;
+use stdClass;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -109,12 +110,12 @@ class RegisterController extends AbstractController
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    private function create($POST, UserRepository $userRepository): bool
+    private function create(array $post, UserRepository $userRepository): bool
     {
-        $firstName = $POST['firstname'];
-        $lastName = $POST['lastname'];
-        $email = $POST['email'];
-        $password = $POST['password'];
+        $firstName = $post['firstname'];
+        $lastName = $post['lastname'];
+        $email = $post['email'];
+        $password = $post['password'];
         
         
         $user = new User();
@@ -227,11 +228,11 @@ class RegisterController extends AbstractController
     }
     
     /**
-     * @param $decodedToken
+     * @param stdClass $decodedToken
      * @param UserRepository $userRepository
      * @return void
      */
-    private function validateUserEmail($decodedToken, UserRepository $userRepository): void
+    private function validateUserEmail(stdClass $decodedToken, UserRepository $userRepository): void
     {
         $userId = $decodedToken->userId;
         $email = $decodedToken->email;

@@ -46,7 +46,7 @@ class UserController extends AbstractController
      * @param $post
      * @return RedirectResponse
      */
-    private function checkAndUpdateUserProfile($post): RedirectResponse
+    private function checkAndUpdateUserProfile(array $post): RedirectResponse
     {
         $email = $post['email'];
         $userRepository = new UserRepository(new Connection());
@@ -99,7 +99,7 @@ class UserController extends AbstractController
             })->setTemplate("L'email existe déjà");
     }
     
-    private function initializeUser($post, UserRepository $userRepository): User
+    private function initializeUser(array $post, UserRepository $userRepository): User
     {
         $email = $post['email'];
         $firstName = $post['firstname'];

@@ -139,7 +139,7 @@ class UserController extends AbstractController
         return $user;
     }
     
-    public function delete($slug): RedirectResponse
+    public function delete(string $slug): RedirectResponse
     {
         $this->isGrantedAdmin($this->getUser());
         

@@ -41,11 +41,11 @@ class MailerService
             ->subject($subject)
             ->html($twig->render($this->template, $this->options));
         
-        if (is_string($replyEmail) and preg_match('/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/', $replyEmail)) {
+        if (!empty($replyEmail) && is_string($replyEmail) && preg_match('/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/', $replyEmail)) {
             $email->replyTo($replyEmail);
         }
         
-        if (is_string($replyEmail) and !preg_match('/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/', $replyEmail)) {
+        if (!empty($replyEmail) && is_string($replyEmail) && !preg_match('/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/', $replyEmail)) {
             throw new Exception('Email non valide.');
         }
         
