@@ -9,9 +9,9 @@ abstract class AbstractSecurity
 {
     /**
      * @param User|null $user
-     * @return true|RedirectResponse
+     * @return RedirectResponse|bool
      */
-    public function isGrantedAdmin(?User $user): true|RedirectResponse
+    public function isGrantedAdmin(?User $user): RedirectResponse|bool
     {
         if (!$user) {
             return new RedirectResponse('/login');

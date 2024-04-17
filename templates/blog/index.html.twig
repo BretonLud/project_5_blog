@@ -10,9 +10,9 @@
         <div class="mb-3 row row-cols-lg-3 row-cols-1 row-cols-md-2">
             {% for blog in blogs %}
                 <div class="col mb-3">
-                    <div class="card">
-                        <div class="card-header bg-info-subtle">
-                            {{ blog.title }}
+                    <div class="card h-100 shadow">
+                        <div class="card-header bg-info-subtle text-center">
+                            <h4>{{ blog.title }}</h4>
                         </div>
                         <div class="card-body">
                             <div id="{{ blog.slug }}" class="carousel slide mb-3" data-bs-ride="carousel">

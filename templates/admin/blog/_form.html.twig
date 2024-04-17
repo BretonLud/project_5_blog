@@ -9,10 +9,11 @@
                 </div>
             {% endif %}
         </div>
-        <div class="form-floating mb-3">
+        <div class="mb-3 form-floating">
+
             <textarea class="form-control {{ (error.content) ? 'is-invalid' }}" placeholder="Texte du blog" id="content" name="content" required
-                      style="height: 100px">{{ (blog is defined) ? blog.content|raw }}</textarea>
-            <label for="content">Texte du blog</label>
+                      style="height: 150px">{{ (blog is defined) ? blog.content|raw }}</textarea>
+            <label for="content" class="form-label">Texte du blog</label>
             {% if error.content %}
                 <div class="invalid-feedback">
                     {{ error.content }}

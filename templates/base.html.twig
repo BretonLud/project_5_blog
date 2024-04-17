@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>{% block title %}Mon portfolio{% endblock %}</title>
-    <link rel="icon"
-          href="">
+    <link rel="icon" href="/build/images/logo-favicon.png">
     <link rel="stylesheet" href="/build/app.css">
     <script src="/build/runtime.js"></script>
     <script src="/build/app.js"></script>
@@ -16,14 +15,18 @@
     {% block javascripts %}
     {% endblock %}
 </head>
-<body class="vh-100">
-<header>
+<body class="d-flex flex-column justify-content-between min-vh-100">
+<div class="social-media d-none d-md-block">
+    <a href="https://github.com/BretonLud" target="_blank" title="github"><i class="bi bi-github"></i></a> <!-- You Can Edit the link here -->
+    <a href="https://www.linkedin.com/in/ludovic-breton/" target="_blank" title="linkedin"><i class="bi bi-linkedin"></i></a> <!-- You Can Edit the link here -->
+</div>
+<header class="sticky-top">
     <nav>
-        <nav class="navbar navbar-expand-lg bg-white p-3 shadow ">
+        <div class="navbar navbar-expand-lg bg-white p-3 shadow">
             <div class="container-fluid">
                 <div class="img-fluid w-25">
                     <a href="/">
-                        <img class="w-100" src=""
+                        <img src="/build/images/logo.png" height="70px"
                              alt="logo">
                     </a>
                 </div>
@@ -94,7 +97,7 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </div>
     </nav>
 </header>
 {% if app.user is not empty and app.user.validated == false %}
@@ -105,7 +108,7 @@
         </div>
     </div>
 {% endif %}
-<div class="container-lg d-flex flex-column flex-grow-1 pb-5 h-75">
+<div class="d-flex flex-column flex-grow-1 h-75 bg-main-color">
     {% for message in success %}
         <div class="flex justify-content-center align-items-center message container mt-3">
             <div class="alert alert-success">{{ message }}</div>
@@ -119,5 +122,26 @@
     {% endfor %}
     {% block body %}{% endblock %}
 </div>
+<footer class="text-center p-2">
+    <div class="footer-content ">
+        <div class="d-flex flex-lg-row-reverse justify-content-around align-items-center flex-column mb-2">
+            <div class="mb-3">
+                <a href="/" title="accueil">
+                    <img src="/build/images/logo.png" height="90px"
+                         alt="logo" class="bg-white rounded-5">
+                </a>
+            </div>
+
+            <div class="social-media-footer">
+                <a href="https://github.com/BretonLud" title="github"><i class="bi bi-github"></i></a>
+                <a href="https://www.linkedin.com/in/ludovic-breton/" title="linkedin"><i class="bi bi-linkedin"></i></a>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>Tous droits réservés</p>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

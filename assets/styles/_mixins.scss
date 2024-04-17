@@ -1,0 +1,7 @@
+@mixin animate ( $attr, $time, $trans){
+  -webkit-transition: $attr $time $trans;
+  -moz-transition: $attr $time $trans;
+  -ms-transition: $attr $time $trans;
+  -o-transition: $attr $time $trans;
+  transition: $attr $time $trans;
+}

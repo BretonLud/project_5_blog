@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Abstract\AbstractController;
+use App\ClassAbstract\AbstractController;
 use App\Http\Response;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;

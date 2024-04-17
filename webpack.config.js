@@ -1,4 +1,4 @@
-var Encore = require('@symfony/webpack-encore');
+const Encore = require('@symfony/webpack-encore');
 
 Encore
     .setOutputPath('public/build/')
@@ -13,18 +13,19 @@ Encore
         // only copy files matching this pattern
         //pattern: /\.(png|jpg|jpeg)$/
     })
-
     .addEntry('app', './assets/app.js')
     .addEntry('blog', './assets/blog.js')
     .addEntry('contact', './assets/contact.js')
+    .addEntry('typed', './assets/typed.js')
+
+    .enableBuildNotifications()
+    .configureBabel((config) => {
+        config.plugins.push('@babel/plugin-proposal-class-properties');
+    })
 
     .cleanupOutputBeforeBuild()
-
     .enableSassLoader()
-    .enableSourceMaps(!Encore.isProduction())
     .enableSingleRuntimeChunk()
-
-    .autoProvidejQuery()
 ;
 
 module.exports = Encore.getWebpackConfig();
