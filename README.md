@@ -75,6 +75,12 @@ Paramétrer votre serveur Apache2 pour pointer vers:&#x20;
 /var/www/project_5_blog/public
 ```
 
+Donner les droits au serveur pour le dossier pictures dans public:&#x20;
+
+```
+ chown www-data:www-data public/pictures
+```
+
 Lancer MailHog:
 
 ```
