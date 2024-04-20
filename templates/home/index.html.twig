@@ -27,7 +27,9 @@
     </section>
     {{ include("/home/_about.html.twig") }}
     {{ include("/home/_skills.html.twig") }}
-    {{ include("/home/_blog.html.twig") }}
+    {% if blogs %}
+        {{ include("/home/_blog.html.twig") }}
+    {% endif %}
 {% endblock %}
 {% block javascripts %}
     <script src="/build/typed.js" defer></script>
