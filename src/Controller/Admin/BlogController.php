@@ -251,13 +251,13 @@ class BlogController extends AbstractController
     
     private function uploadImages(array $pictures, Blog $blog, array $datas): void
     {
-        foreach ($pictures['tmp_name'] as $key => $tmp_name) {
+        foreach ($pictures['tmp_name'] as $key => $tmpName) {
             
-            if (empty($tmp_name)) {
+            if (empty($tmpName)) {
                 continue;
             }
             
-            if (!file_exists($tmp_name)) {
+            if (!file_exists($tmpName)) {
                 continue;
             }
             
@@ -273,7 +273,11 @@ class BlogController extends AbstractController
             (new SlugService($name, $this->pictureRepository, $picture))->updateSlug();
             $this->pictureRepository->createImageForBlog($picture);
             
-            move_uploaded_file($tmp_name, ROOT . "/public/pictures/$name");
+            try {
+                move_uploaded_file($tmpName, self::UPLOAD_DIR . $name);
+            } catch (Exception $e) {
+                $_SESSION['errors'][] = $e->getMessage();
+            }
             
         }
     }
@@ -323,7 +327,12 @@ class BlogController extends AbstractController
             return;
         }
         
-        unlink(self::UPLOAD_DIR . $picture->getName());
+        try {
+            unlink(self::UPLOAD_DIR . $picture->getName());
+        } catch (Exception $e) {
+            $_SESSION['errors'][] = $e->getMessage();
+        }
+       
         
         $tmpName = $_FILES[self::PICTURES_KEY]['tmp_name'][$index];
         $name = uniqid("", true) . '_' . $picturesData[$index];
@@ -334,7 +343,13 @@ class BlogController extends AbstractController
             $picture->setHeader($_POST[self::PICTURES_KEY][$index]['header']);
         
         $this->pictureRepository->update($picture);
-        move_uploaded_file($tmpName, self::UPLOAD_DIR . $name);
+        
+        try {
+            move_uploaded_file($tmpName, self::UPLOAD_DIR . $name);
+        } catch (Exception $e) {
+            $_SESSION['errors'][] = $e->getMessage();
+        }
+        
     }
     
     private function deletePicture($picture): void
