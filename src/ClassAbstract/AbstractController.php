@@ -2,7 +2,6 @@
 
 namespace App\ClassAbstract;
 
-use App\Database\Connection;
 use App\Entity\User;
 use App\Repository\CommentRepository;
 use App\Repository\UserRepository;
@@ -47,7 +46,7 @@ abstract class AbstractController extends AbstractSecurity
             return null;
         }
         
-        $user = (new UserRepository(new Connection()))->findBySlug($_SESSION['user']['slug']);
+        $user = (new UserRepository())->findBySlug($_SESSION['user']['slug']);
         
         if ($user && !$user->getValidated()) {
             $this->twig->addGlobal('validated', true);
