@@ -18,7 +18,7 @@ $dotenv->safeLoad();
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(ROOT);
 $dotenv->load();
 
-$router = new Router($_GET['url']);
+$router = new Router($_SERVER['REQUEST_URI']);
 
 $router->get('/', "Home#index");
 $router->get('/login', "Security#login");
